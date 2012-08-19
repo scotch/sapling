@@ -1,12 +1,12 @@
 {
   "author": "Kyle Finley",
-  "name": "sapling-seed",
-  "description": "AngularJS + Brunch",
+  "name": "sapling",
+  "description": "AngularJS Starter App Providing User Management",
   "version": "0.0.1",
-  "homepage": "https://github.com/scotch/angular-brunch-seed",
+  "homepage": "https://github.com/scotch/sapling",
   "repository": {
     "type": "git",
-    "url": "https://github.com/scotch/angular-brunch-seed"
+    "url": "https://github.com/scotch/sapling"
   },
   "engines": {
     "node": "~0.6.10 || 0.8 || 0.9"

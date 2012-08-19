@@ -1,4 +1,4 @@
-# angular-brunch-seed
+# sapling
 ### A started project for AngularJS using Brunch.io
 
 [AngularJS](http://angularjs.org) + [Brunch](http://brunch.io)
@@ -11,15 +11,15 @@ Features:
   unit tests
 * Bootstrap integration with themes.
 
-## How to use angular-brunch-seed
+## How to use sapling
 
-* `git clone https://github.com/scotch/angular-brunch-seed.git` to clone the **angular-brunch-seed** repository
-* `cd angular-brunch-seed`
+* `git clone https://github.com/scotch/sapling.git` to clone the **sapling** repository
+* `cd sapling`
 * `./scripts/init.sh` to install node packages
 
 or if you have **Brunch** installed run:
 
-`brunch new myapp --skeleton https://github.com/scotch/angular-brunch-seed`
+`brunch new myapp --skeleton https://github.com/scotch/sapling`
 
 ### Running the app during development
 

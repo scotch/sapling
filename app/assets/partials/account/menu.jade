@@ -7,8 +7,7 @@ ul.nav.pull-right
     span(ng-show='User.isAuthenticated()')
       a(ng-class="getClass('/account')", href='/account/') Account
       |  | 
-      a.dropdown-toggle(data-toggle='dropdown', href='/account/')
-        b.caret
+      a(href='/account/')
         span(ng-bind="User.formattedName()")
       ul.dropdown-menu(ng-show='UserloggedIn')
         li

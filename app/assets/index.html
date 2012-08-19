@@ -24,16 +24,16 @@
       <div class="navbar">
         <div class="navbar-inner">
           <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>
-            <div class="brand"><a href="/">Angular Brunch Seed</a></div>
+            <div class="brand"><a href="/">Sapling</a></div>
             <div class="nav-collapse">
               <div ng-include="'/partials/nav.html'"></div>
+              <div ng-include="'/partials/account/menu.html'"></div>
             </div>
           </div>
         </div>
       </div>
       <div class="container main-content">
         <div ng-view></div>
-        <div>Angular Brunch seed app: v<span app-version></span></div>
       </div>
       <div class="push"></div>
     </div>

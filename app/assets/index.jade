@@ -30,12 +30,12 @@ html(lang='en')
               span.icon-bar
               span.icon-bar
             .brand
-              a(href='/') Angular Brunch Seed
+              a(href='/') Sapling
             .nav-collapse
               div(ng-include="'/partials/nav.html'")
+              div(ng-include="'/partials/account/menu.html'")
       .container.main-content
         div(ng-view)
-        div Angular Brunch seed app: v<span app-version></span>
       .push
 
     footer.footer

@@ -22,7 +22,10 @@ App.config([
 ($routeProvider, $locationProvider, $httpProvider) ->
 
   $routeProvider
-    .when('/', {templateUrl: '/partials/products/index.html'})
+    # Pages
+    .when('/', {templateUrl: '/partials/home.html'})
+    .when('/about', {templateUrl: '/partials/about.html'})
+
     # Auth
     .when('/auth', {redirectTo: '/auth/login'})
     .when('/auth/login', {templateUrl: '/partials/auth/login.html'})

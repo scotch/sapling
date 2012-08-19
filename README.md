@@ -1,5 +1,5 @@
 # sapling
-### A started project for AngularJS using Brunch.io
+### AngularJS Starter App Providing User Management
 
 [AngularJS](http://angularjs.org) + [Brunch](http://brunch.io)
 

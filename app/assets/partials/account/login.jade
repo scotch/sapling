@@ -1,0 +1,39 @@
+section(ng-controller="AccountLoginCtrl")
+  header
+    h2 Login
+  .aeauth-form.row
+    .alert.alert-error(ng-show="FormErrors")
+      ul
+        li(ng-repeat="msg in ErrMsgs", ng-bind-html-unsafe="msg")
+    .span5
+      header
+        h4 To get started, login with one of your existing accounts.
+      ul
+        li.provider-btn(ng-repeat="p in Providers")
+          button.btn(ng-click="Authenticate(p)")
+            img(ng-src="/img/auth/{{p.name}}.png")
+    .span4
+      header
+        h4 Or create a new one.
+      .password-form.form-horizontal
+        form.form(nonvalidate name="form")
+          fieldset.control-group
+            label.control-label(for="email")
+              strong Email
+            .controls
+              input#email(required ng-model="User.email", type="email", name="email")
+              span.help-inline(ng-hide='form.email.$invalid')
+                i.icon-ok
+          fieldset.control-group
+            label.control-label(for="password")
+              strong Password
+            .controls
+              input#password(required pattern=".{4,31}", ng-model="Password", type="password", name="password")
+          fieldset.form-actions
+            input.btn.btn-success(type="submit", ng-click="Login(User, Password)", ng-disabled="form.$invalid || WaitText", value="{{WaitText || 'Login'}}")
+          fieldset.control-group
+            .controls
+              p
+                small
+                  a(href="/account/recovery") Can't access your account?
+

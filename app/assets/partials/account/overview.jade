@@ -1,0 +1,24 @@
+section#content(ng-controller="AccountOverviewCtrl")
+  header
+    h1#section-header Account Overview
+  .row
+    .span2
+      div(ng-include="'/partials/account/nav.html'")
+      &nbsp;
+    section#section-content
+      .span7
+        .row
+          .span1
+            img(src="http://placehold.it/80x80")
+          .span6
+            h4 {{ User.formattedName() }}
+            p
+              a(href="/account/profile") Edit Profile
+
+        hr
+        section
+          h3 Services
+          dl
+            dt Delete Account
+            dd
+              a(ng-click="DeleteUser(User)") Close account and delete all services and info accociated with it

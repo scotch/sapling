@@ -1,0 +1,22 @@
+section(ng-controller="AccountRecoveryCtrl")
+  header
+    h1#section-header Account Recovery
+
+  .row
+    .span2(ng-show="User.isAuthenticated()")
+      div(ng-include="'/partials/account/nav.html'")
+      &nbsp;
+    section#section-content
+      .span7
+        p To reset your password, enter the email address you used when creating your {{ application_title }} account.
+        form(name="form", novalidate)
+          fieldset.control-group
+            label.control-label(for="email") Email Address
+            .controls
+              input(required ng-model="User.email", type="email", name="email")
+          fieldset.control-group
+            button.btn.btn-success(type="submit", ng-disabled="form.$invalid") Submit
+        div(ng-hide="User.isAuthenticated()")
+          p
+            small If you don't have a {{ App.Title }} account you can 
+              a(href="/signup") create one now

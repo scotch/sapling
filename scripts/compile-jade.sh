@@ -1,3 +1,3 @@
 #!/bin/bash
 
-jade app/assets/partials/* app/assets/index.jade --watch --pretty
+jade _public/index.jade _public/partials/* _public/partials/**/* -w -P

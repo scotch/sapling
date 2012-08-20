@@ -3,6 +3,12 @@ ErrEmailInUse = 'Email address in use. Try <a href="/login">Logging in</a>'
 ErrInvalidAddress = 'Account not found for email address. Try <a href="/signup">Create Account</a>'
 ErrPasswordLength = 'Password must be between 4 -32 characters'
 
+errors =
+  'email: invalid address': ErrInvalidAddress
+  'password: profile not found for email address': ErrInvalidAddress
+  'password: invalid password': ErrPasswordLength
+  'email: in use': ErrEmailInUse
+
 angular.module('account.controllers', [
   'config.services'
   'flash.services'
@@ -91,13 +97,7 @@ angular.module('account.controllers', [
         r = data.result
         if data.error
           $scope.FormErrors = true
-          switch data.error
-            when 'auth/password: profile not found for email address'
-              $scope.ErrMsgs.push ErrInvalidAddress
-            when 'password: invalid password'
-              $scope.ErrMsgs.push ErrPasswordLength
-            else
-              $scope.ErrMsgs.push ErrServer
+          $scope.ErrMsgs.push errors[data.error] or ErrServer
       )
       .error((data, status) ->
         $scope.ErrMsgs.push ErrServer
@@ -122,13 +122,7 @@ angular.module('account.controllers', [
         $scope.User = data.result.Person
         if data.error
           $scope.FormErrors = true
-          switch data.error
-            when 'email: in use'
-              $scope.ErrMsgs.push ErrEmailInUse
-            when 'password: invalid password'
-              $scope.ErrMsgs.push ErrPasswordLength
-            else
-              $scope.ErrMsgs.push ErrServer
+          $scope.ErrMsgs.push errors[data.error] or ErrServer
       )
       .error((data, status) ->
         $scope.ErrMsgs.push ErrServer

@@ -36,7 +36,7 @@ angular.module('account.controllers', [
 
   # Globals
   $scope.Providers = [
-    {name: 'google',    url: cnfg.AUTH_URL+'/google'}
+    {name: 'google+',    url: cnfg.AUTH_URL+'/google'}
     {name: 'facebook',  url: cnfg.AUTH_URL+'/facebook'}
     {name: 'twitter',   url: cnfg.AUTH_URL+'/twitter'}
     {name: 'linkedin',  url: cnfg.AUTH_URL+'/linkedin'}

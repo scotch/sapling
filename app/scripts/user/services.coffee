@@ -51,7 +51,16 @@ angular.module('user.services', [
 
   emails = []
 
+  status =
+    0: 'unverified'
+    1: 'pending'
+    2: 'verified'
+    3: 'primary'
+
   # return
+  Status : (code) ->
+    return status[code]
+
   Current: () ->
     if not u.id
       rpc.Run('User.Current', null)

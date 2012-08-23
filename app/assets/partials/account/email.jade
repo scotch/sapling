@@ -12,4 +12,5 @@ section#content(ng-controller="AccountEmailCtrl")
             h3 {{e.address}}
             p status {{e.status == 0}}
             input.btn(type="submit", ng-show="e.status == 0", ng-click="Verify(e)", value="Verify") Verify
+            span.label.label-success(ng-show="e.status == 0") Default
             input.btn(type="submit", ng-click="Remove(e)", value="Remove") Remove

@@ -1,8 +1,47 @@
 h3 About
 :markdown
-  **Sapling** is an starter application for AngularJS apps.
-  It goes beyond the basic setup to provide:
+  # **sapling-aego**
+  ## *[Sapling](http://github.com/scotch/sapling) Backend Written in [Go](http://golang.org) - Engineered to Run on [Google App Engine](https://developers.google.com/appengine/)*
 
-  * User models
-  * Sessions
-  * Account Management
+  ## How to use sapling-aego
+
+  1. `git clone https://github.com/scotch/sapling-aego.git` to clone the **sapling-aego** repository
+  2. `cd sapling-aego`
+  3. `git submodule init`
+  4. `git submodule update`
+  5. `cd client/`
+  6. `./scripts/init.sh` to install node packages
+  7. `./scripts/development.sh` to compile javascripts and css
+
+  #### Using Jade?
+
+  8. `./scripts/compile-jade.sh` to run a jade watcher
+
+  #### **Or** Using HTML?
+
+  8. `./scripts/compile-html.sh` to compile html files in `app/assets`
+
+  ## Tech
+
+  * [AngularJS](http://angularjs.org)
+  * [Brunch](http://brunch.io)
+  * [Go](http://golang.org)
+  * [Google App Engine](https://developers.google.com/appengine/)
+
+  ## Features
+
+  ### Client
+
+  * Coffeescrpt / Less / Sass / SCSS / Stylus automatically compiled on save
+  * auto-reload during development saves you from manually refreshing the page
+  * Javascript / CSS minification for production
+  * [testacular](https://github.com/vojtajina/testacular) integration for
+    unit tests
+  * Bootstrap integration with themes.
+
+  ### Server
+
+  * Go
+
+
+  TODO added more...

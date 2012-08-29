@@ -35,6 +35,7 @@ angular.module('auth.password.services', [
     obj =
       password:
         current: pass
+        email: email
       person:
         email: email
     rpc.Run('Password.Authenticate', obj)

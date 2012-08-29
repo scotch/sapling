@@ -1,3 +1,7 @@
+###
+# user.services provides services for interating with users
+###
+
 angular.module('user.services', [
   'config.services'
   'rpc.services'
@@ -8,10 +12,15 @@ angular.module('user.services', [
 	'$location'
   '$http'
   '$rootScope'
+  '$route'
   'rpc'
   'flash'
 
-(cnfg, $location, $http, rs, rpc, flash) ->
+(cnfg, $location, $http, $rootScope, $route, rpc, flash) ->
+
+  ###
+  # User
+  ###
 
   # The User Object.
   defaultUser =
@@ -40,6 +49,10 @@ angular.module('user.services', [
   User = (value) ->
     angular.copy(value or defaultUser, @)
 
+  ###
+  # Email
+  ###
+
   # The Email Object.
   defaultEmail =
     address: ''
@@ -48,6 +61,17 @@ angular.module('user.services', [
     updated: ''
 
   u = new User()
+
+  $rootScope.$on "$routeChangeSuccess", (current) ->
+    console.log 'checking'
+    authRequired = $route.current and $route.current.$route and $route.current.$route.auth
+    if authRequired and not u.isAuthenticated()
+      console.log 'not authenticated'
+      #growl.info "Authentication error", "You need to be signed in to view that page.<br/><br/>" + "Please sign in and we'll have you viewing that page in a jiffy"
+      currentUrl = $location.url()
+      redirectUrl = cnfg.AUTH_LOGIN_URL + '?next=' + encodeURIComponent(currentUrl)
+      console.log redirectUrl
+      $location.url(redirectUrl)
 
   emails = []
 

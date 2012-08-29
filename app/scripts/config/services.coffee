@@ -9,6 +9,7 @@ angular.module('config.services', [])
     AUTH_URL: '/-/auth'
     AUTH_SUCCESS_URL: '/'
     AUTH_ERROR_URL: '/login'
+    AUTH_LOGIN_URL: '/login'
     IMAGE_UPLOAD_URL: '/-/images'
 
   return defaultConfig

@@ -33,14 +33,14 @@ App.config([
     .when('/signup', {templateUrl: '/partials/account/signup.html'})
     .when('/login', {templateUrl: '/partials/account/login.html'})
     # Account
-    .when('/account', {redirectTo: '/account/overview'})
-    .when('/account/', {redirectTo: '/account/overview'})
-    .when('/account/recovery', {templateUrl: '/partials/account/recovery.html'})
-    .when('/account/email', {templateUrl: '/partials/account/email.html'})
-    .when('/account/overview', {templateUrl: '/partials/account/overview.html'})
-    .when('/account/connected', {templateUrl: '/partials/account/connected.html'})
-    .when('/account/password', {templateUrl: '/partials/account/password.html'})
-    .when('/account/profile', {templateUrl: '/partials/account/profile.html'})
+    .when('/account',           {redirectTo: '/account/overview'})
+    .when('/account/',          {auth: true, redirectTo: '/account/overview'})
+    .when('/account/recovery',  {templateUrl: '/partials/account/recovery.html'})
+    .when('/account/email',     {auth: true, templateUrl: '/partials/account/email.html'})
+    .when('/account/overview',  {auth: true, templateUrl: '/partials/account/overview.html'})
+    .when('/account/connected', {auth: true, templateUrl: '/partials/account/connected.html'})
+    .when('/account/password',  {auth: true, templateUrl: '/partials/account/password.html'})
+    .when('/account/profile',   {auth: true, templateUrl: '/partials/account/profile.html'})
 
     .when('/account/signup', {templateUrl: '/partials/account/profile.html'})
 

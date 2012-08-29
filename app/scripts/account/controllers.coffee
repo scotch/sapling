@@ -36,14 +36,15 @@ angular.module('account.controllers', [
 
   # Globals
   $scope.Providers = [
-    {name: 'google+',    url: cnfg.AUTH_URL+'/google'}
-    {name: 'facebook',  url: cnfg.AUTH_URL+'/facebook'}
-    {name: 'twitter',   url: cnfg.AUTH_URL+'/twitter'}
-    {name: 'linkedin',  url: cnfg.AUTH_URL+'/linkedin'}
-    {name: 'yahoo',     url: cnfg.AUTH_URL+'/appengine_openid?provider=yahoo.com'}
+    #{name: 'google+',    url: cnfg.AUTH_URL+'/google'}
+    #{name: 'facebook',  url: cnfg.AUTH_URL+'/facebook'}
+    #{name: 'twitter',   url: cnfg.AUTH_URL+'/twitter'}
+    #{name: 'linkedin',  url: cnfg.AUTH_URL+'/linkedin'}
+    #{name: 'github',    url: cnfg.AUTH_URL+'/github'}
     {name: 'google',    url: cnfg.AUTH_URL+'/appengine_openid?provider=gmail.com'}
-    {name: 'github',    url: cnfg.AUTH_URL+'/github'}
-    {name: 'myspace',   url: cnfg.AUTH_URL+'/appengine_openid?provider=yahoo.com'}
+    {name: 'yahoo',     url: cnfg.AUTH_URL+'/appengine_openid?provider=yahoo.com'}
+    {name: 'myspace',   url: cnfg.AUTH_URL+'/appengine_openid?provider=myspace.com'}
+    {name: 'aol',       url: cnfg.AUTH_URL+'/appengine_openid?provider=aol.com'}
   ]
 
   # Functions
@@ -80,13 +81,14 @@ angular.module('account.controllers', [
 
 .controller('AccountLoginCtrl', [
   '$scope'
+  '$location'
   'config'
   'user'
   '$timeout'
   'flash'
   'password'
 
-($scope, cnfg, user, $timeout, flash, password) ->
+($scope, $location, cnfg, user, $timeout, flash, password) ->
 
   $scope.FormErrors = false
   $scope.ErrMsgs = []
@@ -98,6 +100,8 @@ angular.module('account.controllers', [
         if data.error
           $scope.FormErrors = true
           $scope.ErrMsgs.push errors[data.error] or ErrServer
+        else
+          $location.path('/account').replace()
       )
       .error((data, status) ->
         $scope.ErrMsgs.push ErrServer
@@ -107,11 +111,12 @@ angular.module('account.controllers', [
 
 .controller('AccountSignupCtrl', [
   '$scope'
+  '$location'
   'user'
   'flash'
   'password'
 
-($scope, user, flash, password) ->
+($scope, $location, user, flash, password) ->
 
   $scope.FormErrors = false
   $scope.ErrMsgs = []
@@ -123,6 +128,8 @@ angular.module('account.controllers', [
         if data.error
           $scope.FormErrors = true
           $scope.ErrMsgs.push errors[data.error] or ErrServer
+        else
+          $location.path('/account').replace()
       )
       .error((data, status) ->
         $scope.ErrMsgs.push ErrServer
@@ -190,9 +197,11 @@ angular.module('account.controllers', [
     user.Update(u)
       .success((data, status) ->
         r = data.result
-        handleError($scope, data.error) if data.error
+        if data.error
+          $scope.FormErrors = true
+          $scope.ErrMsgs.push errors[data.error] or ErrServer
       )
       .error((data, status) ->
-        handleError($scope, status)
+        $scope.ErrMsgs.push ErrServer
       )
 ])

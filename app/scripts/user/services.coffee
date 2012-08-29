@@ -68,11 +68,10 @@ angular.module('user.services', [
   ###
 
   $rootScope.$on "$routeChangeSuccess", (current) ->
-    console.log 'checking'
     authRequired = $route.current and $route.current.$route and $route.current.$route.auth
     if authRequired and not u.isAuthenticated()
-      console.log 'not authenticated'
       #growl.info "Authentication error", "You need to be signed in to view that page.<br/><br/>" + "Please sign in and we'll have you viewing that page in a jiffy"
+      currentUrl = $location.url()
       redirectUrl = cnfg.AUTH_LOGIN_URL + '?next=' + encodeURIComponent(currentUrl)
       $location.url(redirectUrl)
 

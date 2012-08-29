@@ -58,6 +58,7 @@ angular.module('account.controllers', [
       if p == cnfg.AUTH_SUCCESS_URL
         targetWin.close()
         $scope.User = user.Current()
+        $location.path('/account').replace()
       else if p == cnfg.AUTH_ERROR_URL
         targetWin.close()
         $scope.ErrMsgs.push 'An error occured please try again.'

@@ -26,3 +26,4 @@ Kyle Finley <kylefinley@gmail.com>
 ### Other authors
 
 Jonah Kagan <jonahkagan@gmail.com>
+Khalid Jebbari <khalid.jebbari@gmail.com>

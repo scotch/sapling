@@ -15,3 +15,4 @@ explanation.*
 
 Jonah Kagan <jonahkagan@gmail.com>
 Kyle Finley <kylefinley@gmail.com>
+Khalid Jebbari <khalid.jebbari@gmail.com>

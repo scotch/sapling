@@ -34,6 +34,7 @@ App.config(
       .when('/login', {templateUrl : '/partials/account/login.html'})
 
       // Account
+      // `auth : true` is a custom value passed to current route
       .when('/account', {redirectTo : '/account/overview'})
       .when('/account/', {auth : true, redirectTo : '/account/overview'})
       .when('/account/recovery', {templateUrl : '/partials/account/recovery.html'})

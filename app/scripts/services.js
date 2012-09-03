@@ -1,7 +1,5 @@
 // Simple service that returns the application version
-// A simpler version would be .value('version', '0.1'); instead of .factory(...);
+// Using the value method since 'version' is a constant, not a computed value.
 
 angular.module('app.services', [])
-  .factory('version', function() {
-    return "0.1";
-  });
+  .value('version', '0.1');

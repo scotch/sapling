@@ -49,3 +49,4 @@ angular.module('person.services', [
   New: (value)->
     angular.copy(value or defaultPerson, @)
 
+])

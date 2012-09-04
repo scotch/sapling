@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "brunch watch --server",
-    "test": "testacular test/testacular.config.js"
+    "test": "testacular test/config.js"
   },
   "dependencies": {
     "brunch": ">= 1.4 < 1.5",

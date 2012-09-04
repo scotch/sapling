@@ -26,6 +26,9 @@
     "test": "testacular test/config.js"
   },
   "dependencies": {
+    "express": "3.0.0rc4",
+    "jade": "*",
+
     "brunch": ">= 1.4 < 1.5",
 
     "javascript-brunch": ">= 1.0 < 1.5",

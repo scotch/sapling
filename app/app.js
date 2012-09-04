@@ -17,7 +17,7 @@ var App = angular.module('app',
 App.config(
   ['$routeProvider',
     '$locationProvider',
-    '$httpProvider'],
+    '$httpProvider',
 
   function ($routeProvider, $locationProvider, $httpProvider) {
 
@@ -70,4 +70,4 @@ App.config(
       }
     }]);
   }
-);
+]);

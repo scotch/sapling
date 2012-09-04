@@ -1,0 +1,35 @@
+
+<section id="content" ng-controller="AccountConnectedCtrl">
+  <header>
+    <h1 id="section-header">Connected Accounts</h1>
+  </header>
+  <div class="row">
+    <div class="span2">
+      <div ng-include="'/partials/account/nav.html'"></div>&nbsp;
+    </div>
+    <section id="section-content">
+      <div class="span7">
+        <div ng-repeat="p in AuthProfiles" class="profiles">
+          <h3><img ng-src="{{p.provider.url|iconify}}"/>{{p.provider.name}}</h3>
+        </div>
+        <dl>
+          <dt>Email</dt>
+          <dd>{{p.email}}</dd>
+        </dl>
+        <dl>
+          <dt></dt>
+        </dl>
+      </div>
+      <div class="well span2">
+        <h4>Connected Accounts</h4>
+        <ul class="icons">
+          <li><i class="icon-caret-right"></i>Provides you with alternative login paths.</li>
+          <li>
+            <div class="icon-caret-right"></div>Allows you to pre-populate forms.
+          </li>
+          <li><i class="icon-caret-right"></i>Allows us to provide a tailored experience based on your interests and connections.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>

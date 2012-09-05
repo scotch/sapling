@@ -1,3 +1,5 @@
+'use strict';
+
 // Password manager service
 
 angular.module('auth.password.services', [

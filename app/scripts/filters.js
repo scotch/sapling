@@ -1,3 +1,5 @@
+'use strict';
+
 // Simple filters
 angular.module('app.filters', [])
   // This one replaces %VERSION% by the actual version provided by the version service (app/scripts/services.js),

@@ -1,3 +1,5 @@
+'use strict';
+
 // Service related to user profile
 // Send RPC requests to retrieve data from the server
 

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ds.services', [
   'config.services',
   'rpc.services'

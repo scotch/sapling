@@ -1,3 +1,5 @@
+'use strict';
+
 // Service that issues RPC requests to the back end
 
 angular.module('rpc.services', [

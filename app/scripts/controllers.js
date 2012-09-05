@@ -1,3 +1,5 @@
+'use strict';
+
 // Define the application level controllers
 angular.module('app.controllers', [])
   // the AppCtrl is used in index.html (see app/assets/index.jade)

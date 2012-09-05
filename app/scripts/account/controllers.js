@@ -1,3 +1,5 @@
+'use strict';
+
 // Controllers for user account
 
 // Error messages. Text actually displayed.

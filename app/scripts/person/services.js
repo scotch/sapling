@@ -1,3 +1,5 @@
+'use strict';
+
 // person.service provides a person object.
 
 angular.module('person.services', [

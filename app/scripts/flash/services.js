@@ -1,3 +1,5 @@
+'use strict';
+
 // Service to broadcast messages to all scopes, since the $broadcast call is made from the $rootScope
 var serv = {};
 

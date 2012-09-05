@@ -1,3 +1,5 @@
+'use strict';
+
 // user.services provides services for interating with users
 
 angular.module('user.services', [

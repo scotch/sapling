@@ -24,13 +24,13 @@ Sapling is intended to be used with a backend, but comes with a basic NodeJS / E
 * `git clone https://github.com/scotch/sapling.git` to clone the **sapling** repository
 * `cd sapling`
 * `./scripts/init.sh` to install node packages
-* `./scripts/development.sh` to compile javascripts and css
+* `./scripts/development.sh` to compile javascript and css
 
 ### Development
 
 #### Starting Sapling (client)
 
-*`./scripts/development.sh` to start **Brunch** compiling
+* `./scripts/development.sh` to start **Brunch** compiling
 *Note: in the future this step will be removed*
 
 #### Starting Express (server)

@@ -1,5 +1,5 @@
 // Service related to user profile
-// Send RPC requests
+// Send RPC requests to retrieve data from the server
 
 angular.module('auth.profile.services', [
   'rpc.services'
@@ -37,7 +37,12 @@ angular.module('auth.profile.services', [
           return this.id != '';
         },
         isAdmin: function() {
-          return 'admin' in this.roles; // TODO: Convert this in a clear way
+          for (var i = 0, l = this.roles.length ; i < l ; i++) {
+            if (roles[i] === 'admin') {
+              return true;
+            }
+          }
+          return false;
         }
       };
 

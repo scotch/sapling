@@ -14,7 +14,7 @@ files = [
   '_public/js/vendor.js',
   '_public/js/app.js',
   'test/vendor/angular/angular-mocks.js',
-  'test/unit/*.js'
+  'test/unit/**/*.spec.js'
 ];
 
 // list of files to exclude

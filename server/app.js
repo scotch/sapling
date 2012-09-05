@@ -4,11 +4,13 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
+  , user = require('./user/api')
+  , session = require('./session/api')
   , fs = require('fs')
   , http = require('http')
   , path = require('path');
 
+express.cookieParser('secret');
 var app = express();
 
 app.configure(function () {
@@ -31,12 +33,13 @@ app.configure('development', function () {
 });
 
 app.get('/', function (req, res) {
+  res.cookie('name', 'tobi', {  path: '/' });
   res.render('index.html');
-
 });
 
-//app.get('/', routes.index);
 app.get('/users', user.list);
+
+app.get('/-/api/v1/session', session.list);
 
 http.createServer(app).listen(app.get('port'), function () {
   console.log("Express server listening on port " + app.get('port'));

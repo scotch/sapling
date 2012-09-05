@@ -13,8 +13,8 @@ var app = express();
 
 app.configure(function () {
   app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/sapling/_public');
-  app.set('view engine', 'jade');
+  app.set('views', __dirname + '/../_public');
+  app.set('view engine', 'ejs');
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
@@ -23,6 +23,7 @@ app.configure(function () {
   app.use(express.session());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, '../_public')));
+  app.engine('html', require('ejs').__express);
 });
 
 app.configure('development', function () {
@@ -30,9 +31,8 @@ app.configure('development', function () {
 });
 
 app.get('/', function (req, res) {
-  fs.readFile(__dirname + '/../_public/index.html', 'utf8', function (err, text) {
-    res.send(text);
-  });
+  res.render('index.html');
+
 });
 
 //app.get('/', routes.index);

@@ -7,7 +7,7 @@ describe('flash.services', function() {
   var rootScope = null;
   beforeEach(module('flash.services'));
 
-  describe('Get User', function() {
+  describe('Test Flash', function() {
     beforeEach(inject(function($injector) {
       flash = $injector.get('flash');
       $rootScope = $injector.get('$rootScope');

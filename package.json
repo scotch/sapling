@@ -42,6 +42,9 @@
     "passport-local": ">= 0.0.0"
   },
   "devDependencies": {
-    "testacular": ">= 0.0.16"
+    "testacular": ">= 0.0.16",
+
+    "mocha": "*",
+    "should": ">= 0.0.1"
   }
 }

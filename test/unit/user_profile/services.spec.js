@@ -21,11 +21,11 @@ describe('userProfile.services', function() {
         expect(p.name.givenName).toBe('');
         expect(p.name.familyName).toBe('');
         // Before name is set
-        expect(p.formattedName()).toBe('Anonymous User');
+        expect(p.displayName()).toBe('Anonymous User');
         // Set the name
         p.name.givenName = 'Ron';
         p.name.familyName = 'Paul';
-        expect(p.formattedName()).toBe('Ron Paul');
+        expect(p.displayName()).toBe('Ron Paul');
       });
     });
 

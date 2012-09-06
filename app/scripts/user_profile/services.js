@@ -21,16 +21,17 @@ angular.module('userProfile.services', [
         },
         email: '',
         emails: [],
+        birthday: '',
         gender: '',
         image: '',
         kind: '',
         provider: '',
         url: '',
         urls: [],
-        tagline: '',
+        utcOffset: '',
 
         // methods
-        formattedName: function () {
+        displayName: function () {
           if (this.name && (this.name.givenName || this.name.familyName)) {
             var a = [];
             a = this.name.givenName ? a.concat(this.name.givenName) : a ;

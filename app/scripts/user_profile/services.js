@@ -1,18 +1,18 @@
 'use strict';
 
-// person.service provides a person object.
+// userProfile.service provides a userProfile object.
 
-angular.module('person.services', [
+angular.module('userProfile.services', [
   'config.services',
   'rpc.services'
 ])
 
-  .factory('person', [
+  .factory('userProfile', [
     'config',
 
     function (config) {
-      // The Person Object.
-      var defaultPerson = {
+      // The userProfile Object.
+      var defaultUserProfile = {
         // attributes
         id: '',
         name: {
@@ -43,10 +43,10 @@ angular.module('person.services', [
 
       };
 
-      // New returns a new Person object
+      // New returns a new userProfile object
       return {
         new: function (value) {
-          return angular.copy(value || defaultPerson, this);
+          return angular.copy(value || defaultUserProfile, this);
         }
       }
     }

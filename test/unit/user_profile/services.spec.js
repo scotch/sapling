@@ -1,23 +1,23 @@
 /**
- * person.service spec
+ * userProfile.service spec
  */
 
-describe('person.services', function() {
-  var person = null;
-  beforeEach(module('person.services'));
+describe('userProfile.services', function() {
+  var userProfile = null;
+  beforeEach(module('userProfile.services'));
 
-  describe('New Person', function() {
+  describe('New userProfile', function() {
     beforeEach(inject(function($injector) {
-      person = $injector.get('person');
+      userProfile = $injector.get('userProfile');
     }));
 
     afterEach(inject(function() {}));
 
     describe('new()', function() {
 
-      it('should return empty person object', function() {
+      it('should return empty userProfile object', function() {
         // Get them
-        var p = person.new();
+        var p = userProfile.new();
         expect(p.name.givenName).toBe('');
         expect(p.name.familyName).toBe('');
         // Before name is set

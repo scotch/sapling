@@ -11,15 +11,25 @@ serv.flash = [
     var flashes = [];
 
     return {
-      Flashes: flashes,
 
-      Add: function (message, level) {
+      /**
+       * add adds a single flash message.
+       *
+       * @param message
+       *  A string representing the flash message
+       * @param level
+       *  the classification of the flash options are:
+       *  - 'info' // the default
+       *  - 'success'
+       *  - 'error'
+       */
+      add: function (message, level) {
         // default value for the level parameter
         level = level || 'info';
 
         var flash = {
-          Message: message,
-          Level: level
+          message: message,
+          level: level
         };
         flashes.push(flash);
 
@@ -27,17 +37,32 @@ serv.flash = [
         $rootScope.$broadcast('flash.add', flash);
       },
 
-      Get: function () {
-        angular.copy(flashes);
+      /**
+       * all returns all flashes, but does **not** clear them
+       * @return {Array}
+       */
+      all: function () {
+        return flashes;
+      },
+
+      /**
+       * clear removes all flashes
+       */
+      clear: function () {
+        $rootScope.$broadcast('flash.clear', true);
         flashes = [];
       },
 
-      Clear: function () {
-        flashes = []
-      },
-
-      Pop: function (position) {
+      /**
+       * getAll returns all flashes and clears them
+       *
+       * @return {Array}
+       */
+      getAll: function () {
         $rootScope.$broadcast('flash.remove');
+        var f = angular.copy(flashes);
+        flashes = [];
+        return f;
       }
     }
   }

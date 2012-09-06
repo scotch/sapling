@@ -7,15 +7,10 @@ angular.module('person.services', [
   'rpc.services'
 ])
 
-  .factory('user', [
+  .factory('person', [
     'config',
-    '$location',
-    '$http',
-    '$rootScope',
-    'rpc',
-    'flash',
 
-    function (cnfg, $location, $http, rs, rpc, flash) {
+    function (config) {
       // The Person Object.
       var defaultPerson = {
         // attributes
@@ -44,14 +39,13 @@ angular.module('person.services', [
              return a.join(' ');
           }
           return 'Anonymous User';
-        }
-      };
+        },
 
-      // return
+      };
 
       // New returns a new Person object
       return {
-        New: function (value) {
+        new: function (value) {
           return angular.copy(value || defaultPerson, this);
         }
       }

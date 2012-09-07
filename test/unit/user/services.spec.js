@@ -209,6 +209,49 @@ describe('user.services::', function() {
       });
 
     });
+
+    describe('Current', function() {
+
+      it('should return a user object if the user has an account', function() {
+        var url = config.API_BASE_URL + '/users/me';
+        var resp = {
+          id: '1',
+          email: 'kyle@example.com',
+          password: {
+            current: '',
+            new: '',
+            isSet: true
+          },
+          name: {
+            givenName: 'Kyle'
+          }
+        };
+
+        $httpBackend.expectGET(url).respond(resp);
+
+        u = user.current();
+        $httpBackend.flush();
+
+        expect(u.id).toBe('1');
+        expect(u.name.givenName).toBe('Kyle');
+
+      });
+
+      it('should return an error if the user does not have and account', function() {
+        // TODO should this be broadcast as a flash message?
+        // TODO the user really doesn't need to know about this, do they?
+        var url = config.API_BASE_URL + '/users/me';
+        var resp = {};
+
+        $httpBackend.expectGET(url).respond(404, resp);
+
+        u = user.current();
+        $httpBackend.flush();
+
+        // TODO check something here.
+
+      });
+    });
   });
 //  describe('Password:', function() {
 //    beforeEach(inject(function($injector) {

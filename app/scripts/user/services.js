@@ -143,18 +143,24 @@ angular.module('user.services', [
         return $http.get(usersUrl + '/' + userId)
       };
 
-
-      var current = function (callback) {
-        if (!u.id) {
-          rpc.Run('User.Current', null)
-            .success(function (data, status) {
-              if (data.error)
-                flash.Add(data.error);
-              else
-                angular.extend(u, data.result.Person);
-            })
-            .error(function (data, status) {});
-        }
+      /**
+       * Retrieves the requesting user's user object from a remote server.
+       *
+       * @url `{API_URL}/user/me`
+       * @method GET
+       * 
+       * @return User object - immediately returns a User object.
+       * The object is empty, but will be populated once the server returns.
+       */
+      var current = function () {
+        $http.get(usersUrl + '/me')
+          .success(function (data, status) {
+            angular.extend(u, data);
+          })
+          .error(function (data, status) {
+            // TODO add flash
+            // flash.addMulti(data.errors);
+          });
         return u;
       };
 //
@@ -188,7 +194,8 @@ angular.module('user.services', [
 //      }
       return {
         create: create,
-        get: get
+        get: get,
+        current: current
       }
     }
   ]);

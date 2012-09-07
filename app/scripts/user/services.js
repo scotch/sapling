@@ -4,6 +4,13 @@
  * user.services provides services for interacting with user.
  * This service serves as a convenient wrapper for other user related services.
  */
+
+// TODO angular.extend the objects that are passed in with the result from the server.
+// E.g.
+//  var u = {'name': {'givenName': 'Kyle'}};
+//  user.create(u);
+//  // after return form sever
+//  u.id // '1' populated from the server
 angular.module('user.services', [
   'config.services',
   'rpc.services',
@@ -16,13 +23,9 @@ angular.module('user.services', [
     '$http',
     '$rootScope',
     '$route',
-    'rpc',
     'flash',
 
-    function (config, $location, $http, $rootScope, $route, rpc, flash) {
-      /******
-       * User
-       *****/
+    function (config, $location, $http, $rootScope, $route, flash) {
 
       /**
        * defaultUser
@@ -56,45 +59,21 @@ angular.module('user.services', [
         return angular.copy(value || defaultUser, this);
       };
 
-      /******
-       * Email
-       *****/
-
-      // The Email Object.
-      var defaultEmail = {
-        address: '',
-        status: '',
-        created: '',
-        updated: ''
-      };
-
       var u = new User();
 
+
       /**
-       * Code taken from https://groups.google.com/forum/?fromgroups=#!starred/angular/POXLTi_JUgg
-       * By Adam Wynne
+       * Retrieves a user from the remote server.
+       *
+       * @url `{API_URL}/user/{userId}`
+       * @method GET
+       *
+       * @param userId the id of the user you would like to retrieve.
+       *
+       *  @return $http promise
        */
-      $rootScope.$on("$routeChangeSuccess", function (current) {
-        var authRequired = $route.current && $route.current.$route && $route.current.$route.auth;
-        if (authRequired && !u.isAuthenticated()) {
-          //growl.info("Authentication error", "You need to be signed in to view that page.<br/><br/>" + "Please sign in and we'll have you viewing that page in a jiffy");
-          var currentUrl = $location.url();
-          var redirectUrl = config.AUTH_LOGIN_REDIRECT_URL + '?next=' + encodeURIComponent(currentUrl);
-          $location.url(redirectUrl)
-        }
-      });
-
-      var emails = [];
-
-      var statusCode = {
-        0: 'unverified',
-        1: 'pending',
-        2: 'verified',
-        3: 'primary'
-      };
-
-      var status = function (code) {
-          return statusCode[code];
+      var get = function (userId) {
+        return $http.get(usersUrl + '/' + userId)
       };
 
       /**
@@ -130,17 +109,29 @@ angular.module('user.services', [
       };
 
       /**
-       * Retrieves a user from the remote server.
+       * Update updates an existing User with a remote server.
        *
-       * @url `{API_URL}/user/{userId}`
-       * @method GET
+       * @url `{API_URL}/user/{user.id}`
+       * @method POST
+       * @payload {object} User
        *
-       * @param userId the id of the user you would like to retrieve.
+       * @param user {object} the User object that will be updated.
        *
        *  @return $http promise
+       *  If an error occurs the promises error function will receive a list of
+       *  errors E.g.
+       *  [
+       *    {
+       *      code: 10,
+       *      message: 'Invalid email'
+       *    }
+       *  ]
        */
-      var get = function (userId) {
-        return $http.get(usersUrl + '/' + userId)
+      var update = function (user) {
+        if (!user.id) {
+          throw new Error("id required");
+        }
+        return $http.post(usersUrl + '/' + user.id, user);
       };
 
       /**
@@ -163,38 +154,31 @@ angular.module('user.services', [
           });
         return u;
       };
-//
-//      logout: function (user) {
-//        var obj = {
-//          Person: user
-//        };
-//        u = defaultUser;
-//        rpc.Run('User.Logout', obj);
-//      },
-//
-//      update = function (user) {
-//        if (!user.id)
-//          throw new Error("The user doesn't have an id");
-//        var obj = {
-//          Person: user
-//        };
-//        rpc.Run('User.Update', obj);
-//      }
-//
-//      emails = function () {
-//        rpc.Run('User.Emails', null)
-//          .success(function (data, status) {
-//            if (data.error)
-//              flash.Add(data.error);
-//            if (data.result.emails)
-//              angular.extend(emails, data.result.emails);
-//          })
-//          .error(function (data, status) {});
-//        return emails;
-//      }
+
+      var signup = function (email, password, user) {
+
+      };
+
+      /**
+       * Code taken from https://groups.google.com/forum/?fromgroups=#!starred/angular/POXLTi_JUgg
+       * By Adam Wynne
+       *
+       * TODO find a better place for this. Session?
+       */
+      $rootScope.$on("$routeChangeSuccess", function (current) {
+        var authRequired = $route.current && $route.current.$route && $route.current.$route.auth;
+        if (authRequired && !u.isAuthenticated()) {
+          // TODO add flash message
+          var currentUrl = $location.url();
+          var redirectUrl = config.AUTH_LOGIN_REDIRECT_URL + '?next=' + encodeURIComponent(currentUrl);
+          $location.url(redirectUrl)
+        }
+      });
+
       return {
-        create: create,
         get: get,
+        create: create,
+        update: update,
         current: current
       }
     }

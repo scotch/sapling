@@ -1,25 +1,24 @@
 'use strict';
 
 // Declare application level module which depends on additional filters and services (most of them are custom)
-var App = angular.module('app',
-  ['ngCookies',
-    'ngResource',
-    'app.controllers',
-    'app.directives',
-    'app.filters',
-    'app.services',
-    'account.controllers',
-    'auth.password.services',
-    'auth.profile.services',
-    'config.services',
-    'rpc.services',
-    'user.services']);
+var App = angular.module('app', [
+  'ngCookies',
+  'ngResource',
+  'account',
+  'auth',
+  'config',
+  'user',
+  'app.controllers',
+  'app.directives',
+  'app.filters',
+  'app.services'
+]);
 
 // Configure application $route, $location and $http services.
-App.config(
-  ['$routeProvider',
-    '$locationProvider',
-    '$httpProvider',
+App.config([
+  '$routeProvider',
+  '$locationProvider',
+  '$httpProvider',
 
   function ($routeProvider, $locationProvider, $httpProvider) {
 

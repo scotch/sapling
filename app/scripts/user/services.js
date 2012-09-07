@@ -1,10 +1,13 @@
 'use strict';
 
-// user.services provides services for interating with users
-
+/**
+ * user.services provides services for interacting with user.
+ * This service serves as a convenient wrapper for other user related services.
+ */
 angular.module('user.services', [
   'config.services',
-  'rpc.services'
+  'rpc.services',
+  'flash'
 ])
 
   .factory('user', [
@@ -16,36 +19,23 @@ angular.module('user.services', [
     'rpc',
     'flash',
 
-    function (cnfg, $location, $http, $rootScope, $route, rpc, flash) {
+    function (config, $location, $http, $rootScope, $route, rpc, flash) {
       /******
        * User
        *****/
 
-      // The User object.
+      /**
+       * defaultUser
+       *
+       * @type {Object}
+       */
       var defaultUser = {
         // attributes
         id: '',
-        name: {
-          givenName: '',
-          familyName: ''
-        },
-        email: '',
-        emails: [],
-        roles: [],
+        displayName: '',
 
         // methods
-        formattedName: function () {
-          if (this.name && (this.name.givenName || this.name.familyName)) {
-            var a = [];
-            a = this.name.givenName ? a.concat(this.name.givenName) : a ;
-            a = this.name.familyName ? a.concat(this.name.familyName) : a ;
-            if (a.length)
-             return a.join(' ');
-          }
-          return 'Anonymous User';
-        },
-
-        isAuthenticated: function() {
+        isAuthenticated: function () {
           return this.id != '';
         },
 
@@ -58,6 +48,8 @@ angular.module('user.services', [
           return false;
         }
       };
+
+      var usersUrl = config.API_BASE_URL + '/users';
 
       // The User Object.
       var User = function (value) {
@@ -83,71 +75,141 @@ angular.module('user.services', [
        * By Adam Wynne
        */
       $rootScope.$on("$routeChangeSuccess", function (current) {
-        authRequired = $route.current && $route.current.$route && $route.current.$route.auth;
+        var authRequired = $route.current && $route.current.$route && $route.current.$route.auth;
         if (authRequired && !u.isAuthenticated()) {
           //growl.info("Authentication error", "You need to be signed in to view that page.<br/><br/>" + "Please sign in and we'll have you viewing that page in a jiffy");
           var currentUrl = $location.url();
-          var redirectUrl = cnfg.AUTH_LOGIN_URL + '?next=' + encodeURIComponent(currentUrl);
-          //$location.url(redirectUrl)
+          var redirectUrl = config.AUTH_LOGIN_REDIRECT_URL + '?next=' + encodeURIComponent(currentUrl);
+          $location.url(redirectUrl)
         }
       });
 
       var emails = [];
 
-      var status = {
+      var statusCode = {
         0: 'unverified',
         1: 'pending',
         2: 'verified',
         3: 'primary'
       };
 
-      return {
-        Status : function (code) {
-          return status[code];
-        },
+      var status = function (code) {
+          return statusCode[code];
+      };
 
-        Current: function () {
-          if (!u.id) {
-            rpc.Run('User.Current', null)
-              .success(function (data, status) {
-                if (data.error)
-                  flash.Add(data.error);
-                else
-                  angular.extend(u, data.result.Person);
-              })
-              .error(function (data, status) {});
-          }
-          return u;
-        },
+      /**
+       * Creates a user on the remote server.
+       *
+       * @url `{API_URL}/user`
+       * @method POST
+       * @payload {object} User
+       *
+       * @param user {object} a user object that will be created.
+       * Properties:
+       *  - email (required)
+       *  - password
+       *    - new (required)
+       *  all other fields are optional
+       *  - name
+       *    - givenName
+       *    - familyName
+       *    - middleName
+       *
+       * @param callback function(err, user) a callback to be called on success
+       * or fail. The callback first argument is a list of error objects. E.g.
+       * [
+       *  {
+       *    code: 10,
+       *    message: 'Invalid email'
+       *  }
+       * ]
+       * the second argument is the user object returned from the server.
+       *
+       * A callback function is preferred over a promise here, because of the
+       * nature of the function. It is likely that the user will be to waiting
+       * on the response, therefore a callback seems more appropriate.
+       */
+      var create = function (user, callback) {
+        $http.post(usersUrl, user)
+          .success(function (data, status) {
+            callback(null, data);
+          })
+          .error(function (data, status) {
+            // TODO add addMulti
+            //flash.addMulti(data.errors, 'error');
+            callback(data.errors, null);
+          });
+      };
 
-        Logout: function (user) {
-          var obj = {
-            Person: user
-          };
-          u = defaultUser;
-          rpc.Run('User.Logout', obj);
-        },
+      /**
+       * Retrieves a user from the remote server.
+       *
+       * @url `{API_URL}/user/{userId}`
+       * @method GET
+       *
+       * @param userId the id of the use you would like to retrieve.
+       * @param callback a callback function to be called on success / fail.
+       *  - first param error contains a list of errors if any
+       *  - second param user contains the user retrieved user.
+       */
+      var get = function (userId, callback) {
+        $http.get(usersUrl + '/' + userId)
+          .success(function (data, status) {
+            callback(null, data);
+          })
+          .error(function (data, status) {
+            // TODO add addMulti
+            //flash.addMulti(data.errors, 'error');
+            callback(data.errors, null);
+          });
+      };
 
-        Update: function (user) {
-          if (!user.id)
-            throw new Error("The user doesn't have an id");
-          var obj = {
-            Person: user
-          };
-          rpc.Run('User.Update', obj);
-        },
 
-        Emails: function () {
-          rpc.Run('User.Emails', null)
+      var current = function (callback) {
+        if (!u.id) {
+          rpc.Run('User.Current', null)
             .success(function (data, status) {
               if (data.error)
                 flash.Add(data.error);
-              if (data.result.emails)
-                angular.extend(emails, data.result.emails);
+              else
+                angular.extend(u, data.result.Person);
             })
             .error(function (data, status) {});
-          return emails;
         }
+        return u;
+      };
+//
+//      logout: function (user) {
+//        var obj = {
+//          Person: user
+//        };
+//        u = defaultUser;
+//        rpc.Run('User.Logout', obj);
+//      },
+//
+//      update = function (user) {
+//        if (!user.id)
+//          throw new Error("The user doesn't have an id");
+//        var obj = {
+//          Person: user
+//        };
+//        rpc.Run('User.Update', obj);
+//      }
+//
+//      emails = function () {
+//        rpc.Run('User.Emails', null)
+//          .success(function (data, status) {
+//            if (data.error)
+//              flash.Add(data.error);
+//            if (data.result.emails)
+//              angular.extend(emails, data.result.emails);
+//          })
+//          .error(function (data, status) {});
+//        return emails;
+//      }
+      return {
+        create: create,
+        get: get
       }
     }
   ]);

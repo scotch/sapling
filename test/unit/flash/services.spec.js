@@ -2,12 +2,12 @@
  * flash.service spec
  */
 
-describe('flash.services', function() {
+describe('flash.services::', function() {
   var flash = null;
   var rootScope = null;
   beforeEach(module('flash.services'));
 
-  describe('Test Flash', function() {
+  describe('flash', function() {
     beforeEach(inject(function($injector) {
       flash = $injector.get('flash');
       $rootScope = $injector.get('$rootScope');

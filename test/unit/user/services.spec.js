@@ -9,7 +9,7 @@ describe('user.services::', function() {
 
   beforeEach(module('user.services'));
 
-  describe('User:', function() {
+  describe('user', function() {
     beforeEach(inject(function($injector) {
       config = $injector.get('config');
       $httpBackend = $injector.get('$httpBackend');
@@ -21,7 +21,65 @@ describe('user.services::', function() {
       $httpBackend.verifyNoOutstandingRequest();
     }));
 
-    describe('Create User', function() {
+    describe('get()', function() {
+
+      it('should return a user if the user exists', function() {
+        var url = config.API_BASE_URL + '/users/1';
+        var resp = {
+          id: '1',
+          email: 'kyle@example.com',
+          password: {
+            current: '',
+            new: '',
+            isSet: true
+          },
+          name: {
+            givenName: 'Kyle'
+          }
+        };
+
+        $httpBackend.expectGET(url).respond(resp);
+
+        p = user.get('1');
+        p.success(function (u, status) {
+          expect(u.id).toBe('1');
+          expect(u.name.givenName).toBe('Kyle');
+        });
+        p.error(function (data, status) {
+          expect(data).toBe(null);
+        });
+
+        $httpBackend.flush();
+      });
+
+      it('should return an an error is not found', function() {
+        var url = config.API_BASE_URL + '/users/2';
+        var resp = {
+          errors: [
+            {
+              message: 'User not found',
+              code: 404
+            }
+          ]
+        };
+
+        $httpBackend.expectGET(url).respond(404, resp);
+
+        p = user.get('2');
+        p.success(function (u, status) {
+          expect(u).toBe(null);
+        });
+        p.error(function (data, status) {
+          expect(status).toBe(404);
+          expect(data.errors[0].code).toBe(404);
+        });
+
+        $httpBackend.flush();
+      });
+
+    });
+
+    describe('create()', function() {
 
       it('should successfully create a user if valid', function() {
         var url = config.API_BASE_URL + '/users';
@@ -152,65 +210,51 @@ describe('user.services::', function() {
 
     });
 
-    describe('Get User', function() {
+    describe('update()', function() {
 
-      it('should return a user if the user exists', function() {
+      it('should successfully update a user if valid', function() {
         var url = config.API_BASE_URL + '/users/1';
-        var resp = {
+        var payload = {
           id: '1',
-          email: 'kyle@example.com',
-          password: {
-            current: '',
-            new: '',
-            isSet: true
-          },
+          email: 'changed@example.com',
           name: {
             givenName: 'Kyle'
           }
         };
 
-        $httpBackend.expectGET(url).respond(resp);
+        $httpBackend.expectPOST(url, payload).respond(payload);
 
-        p = user.get('1');
+        p = user.update(payload);
         p.success(function (u, status) {
+          expect(status).toBe(200);
           expect(u.id).toBe('1');
-          expect(u.name.givenName).toBe('Kyle');
         });
         p.error(function (data, status) {
           expect(data).toBe(null);
         });
 
         $httpBackend.flush();
+
       });
 
-      it('should return an an error is not found', function() {
-        var url = config.API_BASE_URL + '/users/2';
-        var resp = {
-          errors: [
-            {
-              message: 'User not found',
-              code: 404
-            }
-          ]
+      it('should return an error if the user does not have and id', function() {
+        var url = config.API_BASE_URL + '/users/1';
+
+        // TODO how is this tested?
+        var payload = {
+         name: {
+           givenName: 'Kyle'
+         }
         };
 
-        $httpBackend.expectGET(url).respond(404, resp);
-
-        p = user.get('2');
-        p.success(function (u, status) {
-          expect(u).toBe(null);
-        });
-        p.error(function (data, status) {
-          expect(status).toBe(404);
-          expect(data.errors[0].code).toBe(404);
-        });
-
-        $httpBackend.flush();
+        // TODO figure out how to test this. Or better yet find a better way to
+        // handle errors..
+        // expect(user.update(payload)).toThrow(new Error("id required"));
+        // $httpBackend.flush();
       });
 
     });
-
-    describe('Current', function() {
+    describe('current()', function() {
 
       it('should return a user object if the user has an account', function() {
         var url = config.API_BASE_URL + '/users/me';
@@ -253,80 +297,5 @@ describe('user.services::', function() {
       });
     });
   });
-//  describe('Password:', function() {
-//    beforeEach(inject(function($injector) {
-//      config = $injector.get('config');
-//      $httpBackend = $injector.get('$httpBackend');
-//      password = $injector.get('user.password');
-//      apiUrl = config.API_BASE_URL;
-//    }));
-//
-//    afterEach(inject(function() {
-//      $httpBackend.verifyNoOutstandingExpectation();
-//      $httpBackend.verifyNoOutstandingRequest();
-//    }));
-//
-//    describe('Checking status', function() {
-//      var url = apiUrl + '/auth/password';
-//
-//      it('should return false if the password has not been set', function() {
-//        var resp = {
-//          isSet: false
-//        };
-//        $httpBackend.expectGET(url).respond(resp);
-//        var p = password.Status();
-//        $httpBackend.flush();
-//        expect(p.isSet).toBe(false);
-//      });
-//
-//      it('should return true if the password has been set', function() {
-//        var resp = {
-//          isSet: false
-//        };
-//        $httpBackend.expectGET(url).respond(resp);
-//        var p = password.Status();
-//        $httpBackend.flush();
-//        expect(p.isSet).toBe(true);
-//      });
-//    });
-//
-//    describe('When creating a password', function() {
-//      var url = apiUrl + '/auth/password';
-//
-//      describe('a new User', function() {
-//
-//        it('should succeed when credentials are valid', function() {
-//          var username = 'kyle';
-//          var pass = 'secret';
-//          var payload = {
-//            username: username,
-//            password: pass
-//          };
-//          var resp = {
-//            isSet: true
-//          };
-//          $httpBackend.expectPOST(url, payload).respond(resp);
-//          var p = password.Create(username, password);
-//          $httpBackend.flush();
-//          expect(p.isSet).toBe(false);
-//        });
-//
-//        it('should receive a 400 Bad request error when invalid', function() {
-//          var username = '';
-//          var pass = '';
-//          var payload = {
-//            username: username,
-//            password: pass
-//          };
-//          var resp = {
-//            isSet: false
-//          };
-//          $httpBackend.expectPOST(url, payload).respond(400, "Bad request");
-//          var p = password.Create(username, password);
-//          $httpBackend.flush();
-//          expect(p.isSet).toBe(false);
-//        });
-//      });
-//    });
-//  });
+
 });

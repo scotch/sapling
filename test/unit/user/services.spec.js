@@ -74,12 +74,18 @@ describe('user.services::', function() {
 
         $httpBackend.expectPOST(url, payload).respond(resp);
 
-        user.create(payload, function (err, u) {
+        p = user.create(payload);
+        p.success(function (u, status) {
+          expect(status).toBe(200);
           expect(u.id).toBe('1');
           expect(u.password.isSet).toBe(true);
         });
+        p.error(function (data, status) {
+          expect(data).toBe(null);
+        });
 
         $httpBackend.flush();
+
       });
 
       it('should return an error if in-valid', function() {
@@ -131,11 +137,14 @@ describe('user.services::', function() {
 
         $httpBackend.expectPOST(url, payload).respond(400, resp);
 
-        user.create(payload, function (err, u) {
-          // TODO this test is fragile. Find a better way.
-          expect(err[0].code).toBe(10);
-          expect(err[1].code).toBe(11);
+        p = user.create(payload);
+        p.success(function (u, status) {
           expect(u).toBe(null);
+        });
+        p.error(function (data, status) {
+          expect(status).toBe(400);
+          expect(data.errors[0].code).toBe(10);
+          expect(data.errors[1].code).toBe(11);
         });
 
         $httpBackend.flush();
@@ -145,7 +154,7 @@ describe('user.services::', function() {
 
     describe('Get User', function() {
 
-      it('should return a user if the use exists', function() {
+      it('should return a user if the user exists', function() {
         var url = config.API_BASE_URL + '/users/1';
         var resp = {
           id: '1',
@@ -162,9 +171,13 @@ describe('user.services::', function() {
 
         $httpBackend.expectGET(url).respond(resp);
 
-        user.get('1', function (err, u) {
+        p = user.get('1');
+        p.success(function (u, status) {
           expect(u.id).toBe('1');
           expect(u.name.givenName).toBe('Kyle');
+        });
+        p.error(function (data, status) {
+          expect(data).toBe(null);
         });
 
         $httpBackend.flush();
@@ -183,9 +196,13 @@ describe('user.services::', function() {
 
         $httpBackend.expectGET(url).respond(404, resp);
 
-        user.get('2', function (err, u) {
-          expect(err[0].code).toBe(404);
+        p = user.get('2');
+        p.success(function (u, status) {
           expect(u).toBe(null);
+        });
+        p.error(function (data, status) {
+          expect(status).toBe(404);
+          expect(data.errors[0].code).toBe(404);
         });
 
         $httpBackend.flush();

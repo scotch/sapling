@@ -104,41 +104,29 @@ angular.module('user.services', [
        * @method POST
        * @payload {object} User
        *
-       * @param user {object} a user object that will be created.
+       * @param user {object} a User object that will be created.
        * Properties:
        *  - email (required)
        *  - password
        *    - new (required)
-       *  all other fields are optional
+       *  All other properties are optional
        *  - name
        *    - givenName
        *    - familyName
        *    - middleName
        *
-       * @param callback function(err, user) a callback to be called on success
-       * or fail. The callback first argument is a list of error objects. E.g.
-       * [
-       *  {
-       *    code: 10,
-       *    message: 'Invalid email'
-       *  }
-       * ]
-       * the second argument is the user object returned from the server.
-       *
-       * A callback function is preferred over a promise here, because of the
-       * nature of the function. It is likely that the user will be to waiting
-       * on the response, therefore a callback seems more appropriate.
+       *  @return $http promise
+       *  If an error occurs the promises error function will receive a list of
+       *  errors E.g.
+       *  [
+       *    {
+       *      code: 10,
+       *      message: 'Invalid email'
+       *    }
+       *  ]
        */
-      var create = function (user, callback) {
-        $http.post(usersUrl, user)
-          .success(function (data, status) {
-            callback(null, data);
-          })
-          .error(function (data, status) {
-            // TODO add addMulti
-            //flash.addMulti(data.errors, 'error');
-            callback(data.errors, null);
-          });
+      var create = function (user) {
+        return $http.post(usersUrl, user);
       };
 
       /**
@@ -147,21 +135,12 @@ angular.module('user.services', [
        * @url `{API_URL}/user/{userId}`
        * @method GET
        *
-       * @param userId the id of the use you would like to retrieve.
-       * @param callback a callback function to be called on success / fail.
-       *  - first param error contains a list of errors if any
-       *  - second param user contains the user retrieved user.
+       * @param userId the id of the user you would like to retrieve.
+       *
+       *  @return $http promise
        */
-      var get = function (userId, callback) {
-        $http.get(usersUrl + '/' + userId)
-          .success(function (data, status) {
-            callback(null, data);
-          })
-          .error(function (data, status) {
-            // TODO add addMulti
-            //flash.addMulti(data.errors, 'error');
-            callback(data.errors, null);
-          });
+      var get = function (userId) {
+        return $http.get(usersUrl + '/' + userId)
       };
 
 

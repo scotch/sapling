@@ -1,15 +1,17 @@
 'use strict';
 
-// Password manager service
+/**
+ * Password strategy service
+ */
 
 angular.module('auth.password.services', [
   'rpc.services'
 ])
 
   .factory('password', [
-    'rpc',
+    '$http',
 
-    function (rpc) {
+    function ($http) {
       var defaultPassword = {
         email: '',
         new: '',
@@ -17,14 +19,20 @@ angular.module('auth.password.services', [
         isSet: ''
       };
 
+      /**
+       * Password object
+       * @param value
+       * @constructor
+       */
       var Password = function (value) {
           angular.copy(value || defaultPassword, this);
       };
 
-      p = new Password();
+      var p = new Password();
 
       return {
-        Current: function () {
+        status: function () {
+
           rpc.Run('Password.Current', null)
             .success( function (data, status) {
               if (data.error) {

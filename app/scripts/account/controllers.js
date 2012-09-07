@@ -2,36 +2,24 @@
 
 // Controllers for user account
 
-// Error messages. Text actually displayed.
-var ErrServer = 'A Sever Error occured. Please try again.',
-  ErrEmailInUse = 'Email address in use. Try <a href="/login">Logging in</a>',
-  ErrInvalidAddress = 'Account not found for email address. Try <a href="/signup">Create Account</a>',
-  ErrPasswordLength = 'Password must be between 4 -32 characters';
-
-// Error messages. A wrapper object to map server error messages to the application error messages defined above.
-var errors = {
-  'email: invalid address'                        : ErrInvalidAddress,
-  'password: profile not found for email address' : ErrInvalidAddress,
-  'password: invalid password'                    : ErrPasswordLength,
-  'email: in use'                                 : ErrEmailInUse
-};
-
 // The module for user account controllers
-angular.module('account.controllers',
-  ['config.services',
-    'flash.services',
-    'user.services'])
+angular.module('account.controllers', [
+  'config',
+  'flash',
+  'user'
+])
 
   // Main controller. Others are sub-controllers inheriting from its scope members and methods.
   // Used in assets/index.jade
-  .controller('AccountCtrl',
-  ['$scope',
+  .controller('AccountCtrl', [
+    '$scope',
     'config',
     'user',
     'password',
     '$timeout',
+    'account.providers',
 
-    function ($scope, cnfg, user, password, $timeout) {
+    function ($scope, cnfg, user, password, $timeout, providers) {
       // 'rpc.status' is a channel used to broadcast messages. It's defined in rpc/services.js
       $scope.$on('rpc.status', function (e, d) {
         if (d == 'waiting')
@@ -47,17 +35,7 @@ angular.module('account.controllers',
       $scope.Password = '';
 
       // Globals
-      $scope.Providers = [
-        //{name: 'google+',    url: cnfg.AUTH_URL+'/google'}
-        //{name: 'facebook',  url: cnfg.AUTH_URL+'/facebook'}
-        //{name: 'twitter',   url: cnfg.AUTH_URL+'/twitter'}
-        //{name: 'linkedin',  url: cnfg.AUTH_URL+'/linkedin'}
-        //{name: 'github',    url: cnfg.AUTH_URL+'/github'}
-        {name : 'google', url : cnfg.AUTH_URL + '/appengine_openid?provider=gmail.com'},
-        {name : 'yahoo', url : cnfg.AUTH_URL + '/appengine_openid?provider=yahoo.com'},
-        {name : 'myspace', url : cnfg.AUTH_URL + '/appengine_openid?provider=myspace.com'},
-        {name : 'aol', url : cnfg.AUTH_URL + '/appengine_openid?provider=aol.com'}
-      ];
+      $scope.Providers = providers.Providers;
 
       // Functions
       // Open a popup to authenticate users, and redirect to account page on success

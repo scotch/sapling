@@ -11,11 +11,14 @@ angular.module('config.services', [])
 
     function ($rootScope) {
       var defaultConfig = {
-        API_URL: '/-/api/v1',
+        API_BASE_URL: '/-/api/v1',
+
         AUTH_URL: '/-/auth',
-        AUTH_SUCCESS_URL: '/',
-        AUTH_ERROR_URL: '/login',
-        AUTH_LOGIN_URL: '/login',
+        AUTH_ERROR_REDIRECT_URL: '/login',
+        AUTH_LOGIN_REDIRECT_URL: '/login',
+        AUTH_SIGNUP_REDIRECT_URL: '/signup',
+        AUTH_SUCCESS_REDIRECT_URL: '/',
+
         IMAGE_UPLOAD_URL: '/-/images'
       };
 

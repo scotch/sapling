@@ -2,28 +2,37 @@
  * user.services spec
  */
 
-describe('user.services::', function() {
+
+describe('user.services::', function () {
   var $httpBackend
     , config
     , user;
 
   beforeEach(module('user.services'));
 
-  describe('user', function() {
-    beforeEach(inject(function($injector) {
-      config = $injector.get('config');
-      $httpBackend = $injector.get('$httpBackend');
-      user = $injector.get('user');
-    }));
+  describe('user', function () {
+    var $httpBackend,
+      config,
+      user;
 
-    afterEach(inject(function() {
+    beforeEach(function () {
+
+      inject(function ($injector, _$httpBackend_) {
+        $httpBackend = _$httpBackend_;
+        config = $injector.get('config');
+        user = $injector.get('user');
+      });
+
+    });
+
+    afterEach(inject(function () {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     }));
 
-    describe('get()', function() {
+    describe('get()', function () {
 
-      it('should return a user if the user exists', function() {
+      it('should return a user if the user exists', function () {
         var url = config.API_BASE_URL + '/users/1';
         var resp = {
           id: '1',
@@ -52,7 +61,7 @@ describe('user.services::', function() {
         $httpBackend.flush();
       });
 
-      it('should return an an error is not found', function() {
+      it('should return an an error is not found', function () {
         var url = config.API_BASE_URL + '/users/2';
         var resp = {
           errors: [
@@ -79,7 +88,7 @@ describe('user.services::', function() {
 
     });
 
-    describe('create()', function() {
+    describe('create()', function () {
 
       it('should successfully create a user if valid', function() {
         var url = config.API_BASE_URL + '/users';
@@ -210,9 +219,9 @@ describe('user.services::', function() {
 
     });
 
-    describe('update()', function() {
+    describe('update()', function () {
 
-      it('should successfully update a user if valid', function() {
+      it('should successfully update a user if valid', function () {
         var url = config.API_BASE_URL + '/users/1';
         var payload = {
           id: '1',
@@ -222,7 +231,7 @@ describe('user.services::', function() {
           }
         };
 
-        $httpBackend.expectPOST(url, payload).respond(payload);
+        $httpBackend.expectPUT(url, payload).respond(payload);
 
         p = user.update(payload);
         p.success(function (u, status) {
@@ -237,7 +246,7 @@ describe('user.services::', function() {
 
       });
 
-      it('should return an error if the user does not have and id', function() {
+      it('should return an error if the user does not have and id', function () {
         var url = config.API_BASE_URL + '/users/1';
 
         // TODO how is this tested?
@@ -254,9 +263,10 @@ describe('user.services::', function() {
       });
 
     });
-    describe('current()', function() {
 
-      it('should return a user object if the user has an account', function() {
+    describe('current()', function () {
+
+      it('should return a user object if the user has an account', function () {
         var url = config.API_BASE_URL + '/users/me';
         var resp = {
           id: '1',
@@ -281,7 +291,7 @@ describe('user.services::', function() {
 
       });
 
-      it('should return an error if the user does not have and account', function() {
+      it('should return an error if the user does not have and account', function () {
         // TODO should this be broadcast as a flash message?
         // TODO the user really doesn't need to know about this, do they?
         var url = config.API_BASE_URL + '/users/me';

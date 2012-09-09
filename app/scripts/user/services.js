@@ -5,12 +5,6 @@
  * This service serves as a convenient wrapper for other user related services.
  */
 
-// TODO angular.extend the objects that are passed in with the result from the server.
-// E.g.
-//  var u = {'name': {'givenName': 'Kyle'}};
-//  user.create(u);
-//  // after return form sever
-//  u.id // '1' populated from the server
 angular.module('user.services', [
   'config',
   'log',
@@ -63,8 +57,9 @@ angular.module('user.services', [
             var a = [];
             a = this.name.givenName ? a.concat(this.name.givenName) : a ;
             a = this.name.familyName ? a.concat(this.name.familyName) : a ;
-            if (a.length)
+            if (a.length) {
               return a.join(' ');
+            }
           }
           return 'Anonymous User';
         },
@@ -189,11 +184,11 @@ angular.module('user.services', [
        */
       $rootScope.$on("$routeChangeSuccess", function (current) {
         var authRequired = $route.current && $route.current.$route && $route.current.$route.auth;
-        if (authRequired && !u.isAuthenticated()) {
+        if (authRequired && !currentUser.isAuthenticated()) {
           // TODO add flash message
           var currentUrl = $location.url();
           var redirectUrl = config.AUTH_LOGIN_REDIRECT_URL + '?next=' + encodeURIComponent(currentUrl);
-          $location.url(redirectUrl)
+          $location.url(redirectUrl);
         }
       });
 

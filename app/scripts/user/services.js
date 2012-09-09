@@ -12,20 +12,22 @@
 //  // after return form sever
 //  u.id // '1' populated from the server
 angular.module('user.services', [
-  'config.services',
-  'rpc.services',
+  'config',
+  'log',
+  'ds',
   'flash'
 ])
 
   .factory('user', [
     'config',
+    'log',
+    'ds',
     '$location',
-    '$http',
     '$rootScope',
     '$route',
     'flash',
 
-    function (config, $location, $http, $rootScope, $route, flash) {
+    function (config, log, ds, $location, $rootScope, $route, flash) {
 
       /**
        * defaultUser
@@ -35,16 +37,45 @@ angular.module('user.services', [
       var defaultUser = {
         // attributes
         id: '',
-        displayName: '',
+        name: {
+          honorificPrefix: '',
+          givenName: '',
+          middleName: '',
+          familyName: '',
+          honorificSuffix: '',
+          formatted: '' // TODO change display name into a function so we can use it here.
+        },
+        email: '',
+        emails: [],
+        birthday: '',
+        gender: '',
+        image: '',
+        roles: [],
+        kind: '',
+        provider: '',
+        url: '',
+        urls: [],
+        utcOffset: '',
 
         // methods
-        isAuthenticated: function () {
-          return this.id != '';
+        displayName: function () {
+          if (this.name && (this.name.givenName || this.name.familyName)) {
+            var a = [];
+            a = this.name.givenName ? a.concat(this.name.givenName) : a ;
+            a = this.name.familyName ? a.concat(this.name.familyName) : a ;
+            if (a.length)
+              return a.join(' ');
+          }
+          return 'Anonymous User';
         },
 
-        isAdmin: function() {
+        isAuthenticated: function () {
+          return this.id !== '';
+        },
+
+        isAdmin: function () {
           for (var i = 0, l = this.roles.length ; i < l ; i++) {
-            if (roles[i] === 'admin') {
+            if (this.roles[i] === 'admin') {
               return true;
             }
           }
@@ -52,15 +83,18 @@ angular.module('user.services', [
         }
       };
 
-      var usersUrl = config.API_BASE_URL + '/users';
-
-      // The User Object.
-      var User = function (value) {
+      /**
+       * User object
+       *
+       * @param value existing vales you would like to merge.
+       * @return a new User object
+       */
+      // TODO can the value param be removed?
+      function User(value) {
         return angular.copy(value || defaultUser, this);
-      };
+      }
 
-      var u = new User();
-
+      var currentUser = new User();
 
       /**
        * Retrieves a user from the remote server.
@@ -72,9 +106,9 @@ angular.module('user.services', [
        *
        *  @return $http promise
        */
-      var get = function (userId) {
-        return $http.get(usersUrl + '/' + userId)
-      };
+      function get(userId, user) {
+        return ds.get('user', userId, user);
+      }
 
       /**
        * Creates a user on the remote server.
@@ -104,9 +138,9 @@ angular.module('user.services', [
        *    }
        *  ]
        */
-      var create = function (user) {
-        return $http.post(usersUrl, user);
-      };
+      function create(user) {
+        return ds.create('User', user);
+      }
 
       /**
        * Update updates an existing User with a remote server.
@@ -127,12 +161,10 @@ angular.module('user.services', [
        *    }
        *  ]
        */
-      var update = function (user) {
-        if (!user.id) {
-          throw new Error("id required");
-        }
-        return $http.post(usersUrl + '/' + user.id, user);
-      };
+      function update(user) {
+        log.assert(user.id, 'user: id is required to preform an update');
+        return ds.update('User', user.id, user);
+      }
 
       /**
        * Retrieves the requesting user's user object from a remote server.
@@ -143,21 +175,11 @@ angular.module('user.services', [
        * @return User object - immediately returns a User object.
        * The object is empty, but will be populated once the server returns.
        */
-      var current = function () {
-        $http.get(usersUrl + '/me')
-          .success(function (data, status) {
-            angular.extend(u, data);
-          })
-          .error(function (data, status) {
-            // TODO add flash
-            // flash.addMulti(data.errors);
-          });
-        return u;
-      };
+      function current() {
+        ds.get('User', 'me', currentUser);
+        return currentUser;
+      }
 
-      var signup = function (email, password, user) {
-
-      };
 
       /**
        * Code taken from https://groups.google.com/forum/?fromgroups=#!starred/angular/POXLTi_JUgg
@@ -176,10 +198,11 @@ angular.module('user.services', [
       });
 
       return {
+        User: User,
         get: get,
         create: create,
         update: update,
         current: current
-      }
+      };
     }
   ]);

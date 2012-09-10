@@ -10,20 +10,20 @@ angular.module('rpc.services', [
     'config',
     '$http',
     '$rootScope',
-    '$q',
 
-    function (cnfg, $http, rs, $q) {
+    function (config, $http, $rootScope) {
       var randNumber = function () {
-        return parseInt(Math.random()*1000000000, 10);
+        return parseInt(Math.random() * 1000000000, 10);
       };
 
       return {
-        Run: function (method, params) {
-          rs.$broadcast('rpc.status', 'waiting');
+        run: function (method, params) {
+          $rootScope.$broadcast('rpc.status', 'waiting');
 
           var p = [];
-          if (params)
+          if (params) {
             p = [params];
+          }
 
           var obj = {
             Method: method,
@@ -31,8 +31,8 @@ angular.module('rpc.services', [
             Id: randNumber()
           };
 
-          return $http.post(cnfg.API_URL, obj);
+          return $http.post(config.API_BASE_URL, obj);
         }
-      }
+      };
     }
   ]);

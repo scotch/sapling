@@ -1,11 +1,26 @@
-/*
+/**
  * GET users listing.
- */
+ **/
 
-exports.list = function(req, res) {
+var user = require("./model");
+
+exports.create = function(req, res) {
   // Create a signed cookie
-  var thirtyDays = 30*24*3600*1000;
-  res.cookie('sapling.user', '1', { maxAge: thirtyDays, httpOnly: true, signed: true });
+  u = {
+    'name': {
+      'givenName': 'Kyle',
+      'familyName': 'Finley'
+    }
+  };
 
-  res.send({ user: 'tobi' });
+  user.createAndLogin(res, u, function (err, u) {
+    res.send(u);
+  });
+
+};
+
+exports.current = function(req, res) {
+  user.current(req, function(err, u) {
+    res.send(u);
+  });
 };

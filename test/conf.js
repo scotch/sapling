@@ -11,9 +11,24 @@ basePath = '../'
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  '_public/js/vendor.js',
-  '_public/js/app.js',
+
+  // Javascript //
+  'vendor/scripts/angular/angular.js',
+  'vendor/scripts/**/*.js',
+  'app/scripts/**/*.js',
+
+  // CoffeeScript //
+  // When using coffeescript you must run `./scripts/development.sh` in the background
+  // to compile the .coffee file to .js. Uncomment these lines to used the generated file.
+  // '_public/js/vendor.js',
+  // '_public/js/app.js',
+
   'test/vendor/angular/angular-mocks.js',
+
+  // Sapling mocks
+  // 'test/vendor/sapling/sapling-mocks.js',
+
+  // Specs
   'test/unit/**/*.spec.js'
 ];
 

@@ -4,11 +4,12 @@
  * log.services spec
  */
 
+// TODO write spec clue:
+// consoleReporter = jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
 describe('log.services::', function () {
   var $log,
     log,
-    consoleReporter,
-    ds;
+    consoleReporter;
 
   beforeEach(module('log.services'));
 
@@ -16,7 +17,6 @@ describe('log.services::', function () {
     beforeEach(inject(function($injector) {
       $log = $injector.get('$log');
       log = $injector.get('log');
-      consoleReporter = jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
     }));
 
     afterEach(inject(function () {
@@ -25,9 +25,7 @@ describe('log.services::', function () {
     describe('assert()', function () {
 
       it('should create a new error', function() {
-
         log.error('test error');
-        expect(consoleReporter).toBe('test error');
       });
 
     });

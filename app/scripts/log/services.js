@@ -10,6 +10,7 @@
  * possible values: 'disable' || 'assert' || 'error' || 'warn' || 'info' || 'debug'
  */
 
+// TODO: should assert be in it's own service?
 angular.module('log.services', [
   'config.services'
 ])

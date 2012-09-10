@@ -4,7 +4,7 @@ describe("directives", function() {
 
   beforeEach(module("app.directives"));
 
-  return describe("app-version", function() {
+  describe("app-version", function() {
     it("should print current version", function() {
       module(function($provide) {
         $provide.value("version", "TEST_VER");

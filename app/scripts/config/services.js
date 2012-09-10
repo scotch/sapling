@@ -7,9 +7,8 @@
 angular.module('config.services', [])
 
   .factory('config', [
-    '$rootScope',
 
-    function ($rootScope) {
+    function () {
       var defaultConfig = {
         API_BASE_URL: '/-/api/v1',
 
@@ -18,6 +17,9 @@ angular.module('config.services', [])
         AUTH_LOGIN_REDIRECT_URL: '/login',
         AUTH_SIGNUP_REDIRECT_URL: '/signup',
         AUTH_SUCCESS_REDIRECT_URL: '/',
+
+        // possible values: 'disable' || 'assert' || 'error' || 'warn' || 'info' || 'debug'
+        LOG_LEVEL: 'debug',
 
         IMAGE_UPLOAD_URL: '/-/images'
       };

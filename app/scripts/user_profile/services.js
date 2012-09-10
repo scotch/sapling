@@ -1,7 +1,10 @@
 'use strict';
 
-// userProfile.service provides a userProfile object.
-
+/**
+ * userProfile.service provides a userProfile object.
+ * You generally will *not* uses the userProfile directly, but instead reference
+ * it through other services. E.g. `user` `auth`
+ */
 angular.module('userProfile.services', [
   'config.services',
   'rpc.services'
@@ -16,14 +19,19 @@ angular.module('userProfile.services', [
         // attributes
         id: '',
         name: {
+          honorificPrefix: '',
           givenName: '',
-          familyName: ''
+          middleName: '',
+          familyName: '',
+          honorificSuffix: '',
+          formatted: '' // TODO change display name into a function so we can use it here.
         },
         email: '',
         emails: [],
         birthday: '',
         gender: '',
         image: '',
+        roles: [],
         kind: '',
         provider: '',
         url: '',
@@ -41,11 +49,26 @@ angular.module('userProfile.services', [
           }
           return 'Anonymous User';
         },
-
+        isAuthenticated: function() {
+          return this.id != '';
+        },
+        isAdmin: function() {
+          for (var i = 0, l = this.roles.length ; i < l ; i++) {
+            if (roles[i] === 'admin') {
+              return true;
+            }
+          }
+          return false;
+        }
       };
 
       // New returns a new userProfile object
       return {
+        /**
+         * new creates a new UserProfile.
+         * @param value
+         * @return {object} a UserProfile object
+         */
         new: function (value) {
           return angular.copy(value || defaultUserProfile, this);
         }

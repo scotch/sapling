@@ -1,20 +1,25 @@
+'use strict';
+
 /**
  * flash.service spec
  */
 
 describe('flash.services::', function() {
-  var flash = null;
-  var rootScope = null;
+  var flash,
+    $rootScope;
+
   beforeEach(module('flash.services'));
 
   describe('flash', function() {
-    beforeEach(inject(function($injector) {
-      flash = $injector.get('flash');
-      $rootScope = $injector.get('$rootScope');
+    beforeEach(function () {
+      inject(function ($injector) {
+        flash = $injector.get('flash');
+        $rootScope = $injector.get('$rootScope');
+      });
       // Add messages
       flash.add('test1');
       flash.add('test2', 'error');
-    }));
+    });
 
     afterEach(inject(function() {}));
 

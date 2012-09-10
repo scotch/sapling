@@ -66,7 +66,7 @@ angular.module('flash.services', [
           flashes = [];
           return f;
         }
-      }
+      };
     }
   ]);
 

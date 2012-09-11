@@ -15,18 +15,18 @@ angular.module('account.controllers.password', [
 
   .controller('AccountPasswordCtrl', [
     '$scope',
+    'flash',
     'user',
-    'password',
 
-    function ($scope, user, password) {
-      // initialize form errors
-      $scope.FormErrors = false;
-      $scope.ErrMsgs = [];
-
-      $scope.Password = password.Current();
-
-      $scope.UpdatePassword = function (email, passCurrent, u) {
-        password.Update(u.email, u.password.current, u.password.new);
+    function ($scope, flash, user) {
+      $scope.updateUser = function (u) {
+        user.update(u)
+          .success(function (data, status) {
+            flash.add('Password updated successfully', 'success');
+          })
+          .error(function (data, status) {
+            flash.add('An error occurred please try again', 'error');
+          });
       };
     }
   ]);

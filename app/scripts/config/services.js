@@ -15,6 +15,7 @@ angular.module('config.services', [])
         AUTH_URL: '/-/auth',
         AUTH_ERROR_REDIRECT_URL: '/login',
         AUTH_LOGIN_REDIRECT_URL: '/login',
+        AUTH_LOGOUT_REDIRECT: '/',
         AUTH_SIGNUP_REDIRECT_URL: '/signup',
         AUTH_SUCCESS_REDIRECT_URL: '/',
 

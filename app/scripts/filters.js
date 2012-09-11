@@ -13,11 +13,11 @@ angular.module('app.filters', [])
      }
   ])
 
-  // This one replace a piece of text by an commonly used url. It has no dependency.
+  // iconify turns a url into image. It has no dependency.
   .filter('iconify', [
     function() {
-      return function (text) {
-        return '//s2.googleusercontent.com/s2/favicons?domain=' + text;
-      }
+      return function (url) {
+        return '//s2.googleusercontent.com/s2/favicons?domain=' + url;
+      };
     }
   ]);

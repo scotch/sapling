@@ -7,9 +7,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title ng-bind-template="{{pageTitle}}"></title>
-    <link rel="stylesheet" href="/css/app.css"><!--[if lte IE 7]>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script><![endif]--><!--[if lte IE 8]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <link rel="stylesheet" href="/css/app.css">
+    <!--[if lte IE 7]>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
+    <![endif]-->
+    <!--[if lte IE 8]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>-->
     <script>
       window.brunch = window.brunch || {};
       window.brunch['auto-reload'] = {
@@ -20,7 +25,7 @@
     <script src="/js/app.js"></script>
   </head>
   <body ng-controller="AppCtrl">
-    <div ng-controller="AccountCtrl" class="wrapper">
+    <div ng-controller="AccountMainCtrl" class="wrapper">
       <div class="navbar navbar-static-top">
         <div class="navbar-inner">
           <div class="container">

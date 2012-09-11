@@ -16,32 +16,26 @@ angular.module('account.controllers.main', [
   .controller('AccountMainCtrl', [
     '$scope',
     'config',
-    'user',
-    'password',
+    'flash',
+    '$location',
     '$timeout',
+    'user',
+    'session',
     'account.providers',
 
-    function ($scope, cnfg, user, password, $timeout, providers) {
-      // 'rpc.status' is a channel used to broadcast messages. It's defined in rpc/services.js
-      $scope.$on('rpc.status', function (e, d) {
-        if (d == 'waiting')
-          $scope.WaitText = 'Working...';
-        else
-          $scope.WaitText = false;
-      });
+    function ($scope, config, flash, $location, $timeout, user, session, providers) {
+
 
       // retrieve the current user
-      $scope.User = user.Current();
-
-      // initialize an empty password
-      $scope.Password = '';
+      $scope.session = session.current();
+      $scope.user = user.current();
 
       // Globals
-      $scope.Providers = providers.Providers;
+      $scope.providers = providers.Providers;
 
       // Functions
       // Open a popup to authenticate users, and redirect to account page on success
-      $scope.Authenticate = function (provider, w, h) {
+      $scope.authenticate = function (provider, w, h) {
         // default values for parameters
         w = w || 400;
         h = h || 350;
@@ -55,13 +49,13 @@ angular.module('account.controllers.main', [
           var p = targetWin.location.pathname;
 
           // Authentication succeeded
-          if (p == cnfg.AUTH_SUCCESS_URL) {
+          if (p == config.AUTH_SUCCESS_REDIRECT_URL) {
             targetWin.close();
-            $scope.User = user.Current();
-            $location.path('/account').replace();
+            $scope.user = user.current();
+            $location.url('/account');
           }
           // Authentication failed "normally"
-          else if (p == cnfg.AUTH_ERROR_URL) {
+          else if (p === config.AUTH_ERROR_REDIRECT_URL) {
             targetWin.close();
             $scope.ErrMsgs.push('An error occured please try again.');
           }
@@ -73,16 +67,18 @@ angular.module('account.controllers.main', [
 
       };
 
-      $scope.Logout = function (u) {
-        user.Logout(u)
+      $scope.logout = function () {
+        session.destroy()
           .success(function (data, status) {
-            if (data.result.Error)
-              if (data.result.Error.Code == 0)
-                $scope.ErrMsgs.push(ErrServer);
+            flash.add('You have been logged out successfully', 'success');
           })
           .error(function (data, status) {
-            $scope.ErrMsgs.push(ErrServer);
+            flash.error('An error occurred please try again', 'error');
           });
+
+        // Redirect regardless of error.
+        $location.url(config.AUTH_LOGOUT_REDIRECT);
       };
+
     }
   ]);

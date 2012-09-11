@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * account.services provides services useful in working with User accounts.
+ * account.services module provides services useful in working with User accounts.
  * Including:
  *   account.errors
  *   account.providers
@@ -18,10 +18,10 @@ angular.module('account.services', [])
     'config',
 
     function (config) {
-      var internalServer  = 500
-        , emailInUse      = 401
-        , invalidAddress  = 402
-        , passwordLength  = 403;
+      var internalServer  = 500,
+        emailInUse      = 401,
+        invalidAddress  = 402,
+        passwordLength  = 403;
 
       // errorText is the text representation of the error..
       var errorText = {
@@ -42,7 +42,7 @@ angular.module('account.services', [])
           return errorText[code]
         }
 
-      }
+      };
     }
   ])
 

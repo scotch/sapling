@@ -18,5 +18,4 @@ angular.module('account.controllers.overview', [
     '$scope',
 
     function ($scope) {}
-
   ]);

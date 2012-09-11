@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * ds.stores.mock provides an in memory mock store for testing.
  */

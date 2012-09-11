@@ -19,9 +19,8 @@ angular.module('user.services', [
     '$location',
     '$rootScope',
     '$route',
-    'flash',
 
-    function (config, log, ds, $location, $rootScope, $route, flash) {
+    function (config, log, ds, $location, $rootScope, $route) {
 
       /**
        * defaultUser
@@ -174,23 +173,6 @@ angular.module('user.services', [
         ds.get('User', 'me', currentUser);
         return currentUser;
       }
-
-
-      /**
-       * Code taken from https://groups.google.com/forum/?fromgroups=#!starred/angular/POXLTi_JUgg
-       * By Adam Wynne
-       *
-       * TODO find a better place for this. Session?
-       */
-      $rootScope.$on("$routeChangeSuccess", function (current) {
-        var authRequired = $route.current && $route.current.$route && $route.current.$route.auth;
-        if (authRequired && !currentUser.isAuthenticated()) {
-          // TODO add flash message
-          var currentUrl = $location.url();
-          var redirectUrl = config.AUTH_LOGIN_REDIRECT_URL + '?next=' + encodeURIComponent(currentUrl);
-          $location.url(redirectUrl);
-        }
-      });
 
       return {
         User: User,

@@ -10,38 +10,29 @@
 angular.module('account.controllers.login', [
   'config',
   'flash',
-  'user'
+  'session'
 ])
 
   .controller('AccountLoginCtrl', [
     '$scope',
-    '$location',
     'config',
-    'user',
-    '$timeout',
     'flash',
-    'password',
+    '$location',
+    'session',
 
-    function ($scope, $location, cnfg, user, $timeout, flash, password) {
-      // initialize form errors
-      $scope.FormErrors = false;
-      $scope.ErrMsgs = [];
+    function ($scope, config, flash, $location, session) {
+      // Note: third party authentication is handled by AccountMainCtrl in the
+      // account.controllers.main module
 
-      $scope.Login = function(u, pass) {
-        password.Login(u.email, pass)
+      $scope.login = function(user) {
+        session.create(user, $scope.session)
           .success(function (data, status) {
-            var r = data.result;
-            if (data.error) {
-              $scope.FormErrors = true;
-              $scope.ErrMsgs.push((errors[data.error] || ErrServer));
-            }
-            else {
-              $location.path('/account').replace();
-            }
+            $location.url('/account');
+            flash.add('Password updated successfully', 'success');
           })
           .error(function (data, status) {
-            $scope.ErrMsgs.push(ErrServer);
+            flash.add('An error occurred please try again', 'error');
           });
-      }
+      };
     }
   ]);

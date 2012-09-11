@@ -15,25 +15,19 @@ angular.module('account.controllers.profile', [
 
   .controller('AccountProfileCtrl', [
     '$scope',
+    'flash',
     'user',
 
-    function ($scope, user) {
-      // initialize form errors
-      $scope.FormErrors = false;
-      $scope.ErrMsgs = [];
-
-      $scope.UpdateUser = function (u) {
-        user.Update(u)
+    function ($scope, flash, user) {
+      $scope.updateUser = function (u) {
+        user.update(u)
           .success(function (data, status) {
-            var r = data.result;
-            if (data.error) {
-              $scope.FormErrors = true;
-              $scope.ErrMsgs.push(errors[data.error] || ErrServer);
-            }
+            // TODO redirect?
+            flash.add('Profile updated successfully', 'success');
           })
           .error(function (data, status) {
-            $scope.ErrMsgs.push(ErrServer);
+            flash.add('An error occurred please try again', 'error');
           });
-      }
+      };
     }
   ]);

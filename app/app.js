@@ -5,7 +5,6 @@ var App = angular.module('app', [
   'ngCookies',
   'ngResource',
   'account',
-  'auth',
   'config',
   'user',
   'app.controllers',
@@ -55,20 +54,19 @@ App.config([
     $locationProvider.html5Mode(true);
 
     // Intercept http request responses to broadcast complete and error statuses
-    $httpProvider.responseInterceptors.push(['$q', '$rootScope', function ($q, $rs) {
-      return function (p) {
-        p.then(
-          function (rsp) {
-            $rs.$broadcast('rpc.status', 'complete');
-            return rsp;
-          }
-          ,
-          function (rsp) {
-            $rs.$broadcast('rpc.status', 'error');
-            $q.reject(rsp);
-          }
-        );
-      }
-    }]);
+//    $httpProvider.responseInterceptors.push(['$q', '$rootScope', function ($q, $rs) {
+//      return function (p) {
+//        p.then(
+//          function (rsp) {
+////            $rs.$broadcast('rpc.status', 'complete');
+//            return rsp;
+//          },
+//          function (rsp) {
+////            $rs.$broadcast('rpc.status', 'error');
+//            $q.reject(rsp);
+//          }
+//        );
+//      };
+//    }]);
   }
 ]);

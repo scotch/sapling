@@ -8,6 +8,11 @@ var user = require("./model");
 exports.create = function(req, res) {
   // Create a new user
   user.create(req.body, function (err, u) {
+    if (err) {
+      // TODO handle server error
+      // if invalid request send 400 Bad Request
+      return res.send(400, err);
+    }
     // Add the user id to the session
     req.session.userId = u.id;
     // strip passwordHash -- we don't want to return it to the client

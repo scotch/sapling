@@ -21,6 +21,9 @@ If you would like to help with the development of Sapling, please follow these s
       controllers_test.coffee
   - Adapt testacular to read coffeescript directly
   - Integrate with Brunch's test suite.
+- Sever angular.js using Google CDN in production
 
 ### Server
 - Configure `npm start` to run brunch in the background. A separate window should not be required.
+- Render and serve templates server side for web-crawlers
+- Add XSRF middleware (http://docs.angularjs.org/api/ng.$http).

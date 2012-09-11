@@ -28,7 +28,7 @@ exports.create = create = function (user, callback) {
     return callback(error.invalidPasswordLengthError, null);
   }
   // check for existing account.
-  findByEmail(user.email, function (err, user) {
+  findByEmail(user.email, function (err, u) {
     if (!err) {
       // no error indicates that an entity was found
       return callback(error.emailInUse, null);

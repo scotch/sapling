@@ -10,7 +10,12 @@ exports.create = function(req, res) {
   user.create(req.body, function (err, u) {
     if (err) {
       // TODO handle server error
-      // if invalid request send 400 Bad Request
+      // if invalid request send 400 Bad Request along with error.
+      // E.g.
+      // {
+      //  code: 10,
+      //  message: 'invalid email'
+      // }
       return res.send(400, err);
     }
     // Add the user id to the session

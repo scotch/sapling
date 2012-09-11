@@ -14,6 +14,10 @@ var validateEmail = function (address) {
   return true;
 };
 
+var findByEmail = function (email, callback) {
+  ds.findByAttribute('User', 'email', email, callback);
+};
+
 exports.create = create = function (user, callback) {
   // confirm the email is valid
   if (!validateEmail(user.email)) {
@@ -23,19 +27,27 @@ exports.create = create = function (user, callback) {
   if (user.password.new.length < 4 || user.password.new.length > 34) {
     return callback(error.invalidPasswordLengthError, null);
   }
-  // encrypt the password using bcrypt
-  bcrypt.hash(user.password.new, 12, function (err, hash) {
-    if (err) {
-      return callback(err, null);
+  // check for existing account.
+  findByEmail(user.email, function (err, user) {
+    if (!err) {
+      // no error indicates that an entity was found
+      return callback(error.emailInUse, null);
     }
-    user.passwordHash = hash;
-    // strip plain text password.
-    user.password.new = '';
-    user.password.current = '';
-    user.password.isSet = true;
-    // Save the user object. We save an object
-    ds.create('User', user, function (err, u)  {
-      return callback(err, user);
+    // no entity so lets create one
+    // encrypt the password using bcrypt
+    bcrypt.hash(user.password.new, 12, function (err, hash) {
+      if (err) {
+        return callback(err, null);
+      }
+      user.passwordHash = hash;
+      // strip plain text password.
+      user.password.new = '';
+      user.password.current = '';
+      user.password.isSet = true;
+      // Save the user object.
+      ds.create('User', user, function (err, u)  {
+        return callback(err, user);
+      });
     });
   });
 };
@@ -46,7 +58,7 @@ exports.read = read = function (id, callback) {
 
 exports.authenticate = function (email, pass, callback) {
 
-  ds.findByAttribute('User', 'email', email, function (err, user) {
+  findByEmail(email, function (err, user) {
     if (err) {
       callback(err, false);
     } else {

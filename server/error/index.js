@@ -43,6 +43,7 @@ var Errors = function () {
     invalidEmailError:              new ApiError(10, 'invalid email'),
     invalidPasswordLengthError:     new ApiError(11, 'invalid password length'),
     invalidPasswordError:           new ApiError(12, 'invalid password or email'),
+    emailInUse:                     new ApiError(13, 'email in use'),
   };
 }();
 

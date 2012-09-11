@@ -2,6 +2,7 @@ var COOKIE_NAME = 'sauser';
 var COOKIE_LIFE = 30*24*3600*1000;
 var ErrInvalidEmailAddress = new Error('invalid email address');
 var ErrPasswordLength = new Error('password must be between 4 and 34 digits');
+var ErrAuthenticationFailed = new Error('incorrect email or password');
 
 // Create a cookie to store the session id
 //res.cookie(COOKIE_NAME, session.id, { maxAge: COOKIE_LIFE, httpOnly: true, signed: true });
@@ -57,12 +58,13 @@ exports.authenticate = function (email, pass, callback) {
     if (err) {
       callback(err, false);
     } else {
-      if (user && user.pass === pass) {
-        callback(null, true);
-      } else {
-        var e = new Error('authentication failed');
-        callback(e, false);
-      }
+      bcrypt.compare(user.passwordHash, pass, function (err, res) {
+        if (res) {
+          callback(null, user);
+        } else {
+          callback(ErrAuthenticationFailed, null);
+        }
+      });
     }
   });
 };

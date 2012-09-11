@@ -1,13 +1,5 @@
-var COOKIE_NAME = 'sauser';
-var COOKIE_LIFE = 30*24*3600*1000;
-var ErrInvalidEmailAddress = new Error('invalid email address');
-var ErrPasswordLength = new Error('password must be between 4 and 34 digits');
-var ErrAuthenticationFailed = new Error('incorrect email or password');
-
-// Create a cookie to store the session id
-//res.cookie(COOKIE_NAME, session.id, { maxAge: COOKIE_LIFE, httpOnly: true, signed: true });
-
 var ds = require('../ds')
+  , error = require('../error')
   , bcrypt = require('bcrypt')
   , create
   , read;
@@ -25,11 +17,11 @@ var validateEmail = function (address) {
 exports.create = create = function (user, callback) {
   // confirm the email is valid
   if (!validateEmail(user.email)) {
-    return callback(ErrInvalidEmailAddress, null);
+    return callback(error.invalidEmailError, null);
   }
   // confirm the the length of the password is valid
   if (user.password.new.length < 4 || user.password.new.length > 34) {
-    return callback(ErrPasswordLength, null);
+    return callback(error.invalidPasswordLengthError, null);
   }
   // encrypt the password using bcrypt
   bcrypt.hash(user.password.new, 12, function (err, hash) {
@@ -62,7 +54,7 @@ exports.authenticate = function (email, pass, callback) {
         if (res) {
           callback(null, user);
         } else {
-          callback(ErrAuthenticationFailed, null);
+          callback(error.invalidPasswordError, null);
         }
       });
     }

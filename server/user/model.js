@@ -1,45 +1,68 @@
-
-var users = [];
-var count = 1;
-
 var COOKIE_NAME = 'sauser';
 var COOKIE_LIFE = 30*24*3600*1000;
+var ErrInvalidEmailAddress = new Error('invalid email address');
+var ErrPasswordLength = new Error('password must be between 4 and 34 digits');
 
-exports.current = function (res, callback) {
-  var userId = res.signedCookies.sauser;
-  if (!userId) {
-    callback(null, null);
+// Create a cookie to store the session id
+//res.cookie(COOKIE_NAME, session.id, { maxAge: COOKIE_LIFE, httpOnly: true, signed: true });
+
+var ds = require('../ds')
+  , bcrypt = require('bcrypt')
+  , create
+  , read;
+
+var validateEmail = function (address) {
+  if (address.indexOf('@') === -1) {
+    return false;
   }
-  var u = users[userId];
-  callback(null, u);
-};
-
-exports.createAndLogin = function (res, user, callback) {
-  user.id = String(count);
-  users[user.id] = user;
-  // Create a cookie to store the user id
-  res.cookie(COOKIE_NAME, user.id, { maxAge: COOKIE_LIFE, httpOnly: true, signed: true });
-  // increment the user id count
-  count++;
-  callback(null, user);
-};
-
-exports.findById = function (id, fn) {
-  var idx = id - 1;
-  if (users[idx]) {
-    fn(null, users[idx]);
-  } else {
-    fn(new Error('User ' + id + ' does not exist'));
+  if (address.indexOf('.') === -1) {
+    return false;
   }
+  return true;
 };
 
-exports.findByUsername = function (username, fn) {
-  for (var i = 0, len = users.length; i < len; i++) {
-    var user = users[i];
-    if (user.username === username) {
-      return fn(null, user);
+exports.create = create = function (user, callback) {
+  // confirm the email is valid
+  if (!validateEmail(user.email)) {
+    return callback(ErrInvalidEmailAddress, null);
+  }
+  // confirm the the length of the password is valid
+  if (user.password.new.length < 4 || user.password.new.length > 34) {
+    return callback(ErrPasswordLength, null);
+  }
+  // encrypt the password using bcrypt
+  bcrypt.hash(user.password.new, 12, function (err, hash) {
+    if (err) {
+      return callback(err, null);
     }
-  }
-  return fn(null, null);
+    user.passwordHash = hash;
+    // strip plain text password.
+    user.password.new = '';
+    user.password.current = '';
+    user.password.isSet = true;
+    // Save the user object. We save an object
+    ds.create('User', user, function (err, u)  {
+      return callback(err, user);
+    });
+  });
 };
 
+exports.read = read = function (id, callback) {
+  ds.read('User', id, callback);
+};
+
+exports.authenticate = function (email, pass, callback) {
+
+  ds.findByAttribute('User', 'email', email, function (err, user) {
+    if (err) {
+      callback(err, false);
+    } else {
+      if (user && user.pass === pass) {
+        callback(null, true);
+      } else {
+        var e = new Error('authentication failed');
+        callback(e, false);
+      }
+    }
+  });
+};

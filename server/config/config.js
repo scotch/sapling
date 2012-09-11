@@ -1,6 +1,0 @@
-/*
-
-Datastore Config
-
-*/
-

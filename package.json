@@ -38,6 +38,7 @@
 
     "express": "3.x.x",
     "ejs": "*",
+    "bcrypt": ">= 0.7.x",
     "passport": ">= 0.0.0",
     "passport-local": ">= 0.0.0"
   },

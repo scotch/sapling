@@ -3,12 +3,13 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
   , user = require('./user/api')
   , session = require('./session/api')
   , fs = require('fs')
   , http = require('http')
   , path = require('path');
+
+var API_BASE_URL = '/-/api/v1';
 
 express.cookieParser('secret');
 var app = express();
@@ -32,14 +33,42 @@ app.configure('development', function () {
   app.use(express.errorHandler());
 });
 
+// Routes //
 app.get('/', function (req, res) {
-  res.cookie('name', 'tobi', {  path: '/' });
   res.render('index.html');
 });
 
-app.get('/users', user.list);
+// Users
+app.get(API_BASE_URL + '/users', user.list);
+app.post(API_BASE_URL + '/users', user.create);
+app.get(API_BASE_URL + '/users/me', user.current);
+app.get(API_BASE_URL + '/users/:userid', user.read);
+app.put(API_BASE_URL + '/users/:userid', user.update);
+app.delete(API_BASE_URL + '/users/:userid', user.delete);
 
-app.get('/-/api/v1/session', session.list);
+// Session
+//app.get(API_BASE_URL + '/sessions', session.list);
+app.post(API_BASE_URL + '/sessions', session.create);
+app.get(API_BASE_URL + '/sessions/me', session.current);
+app.put(API_BASE_URL + '/sessions/me', session.update);
+//app.get(API_BASE_URL + '/sessions/:sessid', session.read);
+//app.put(API_BASE_URL + '/sessions/:sessid', session.update);
+//app.delete(API_BASE_URL + '/sessions/:sessid', session.delete);
+
+
+// Catch all route -- If a request makes it this far, it will be passed to angular.
+// This allows for html5mode to be set to true. E.g.
+// 1. Request '/signup'
+// 2. Not found on server.
+// 3. Redirected to '/#/signup'
+// 4. Caught by the '/' handler passed to Angular
+// 5. Angular will check for '#/signup' against it's routes.
+// 6. If found
+//  a. Browser supports history api -- change the url to '/signup'.
+//  b. Browser does not support history api -- keep the url '/#/signup'
+app.use(function (req, res) {
+  res.redirect('/#' + req.path);
+});
 
 http.createServer(app).listen(app.get('port'), function () {
   console.log("Express server listening on port " + app.get('port'));

@@ -12,7 +12,7 @@
         <div class="row">
           <div class="span1"><img src="http://placehold.it/80x80"/></div>
           <div class="span6">
-            <h4>{{ User.formattedName() }}</h4>
+            <h4>{{ user.displayName() }}</h4>
             <p><a href="/account/profile">Edit Profile</a></p>
           </div>
         </div>
@@ -21,7 +21,7 @@
           <h3>Services</h3>
           <dl>
             <dt>Delete Account</dt>
-            <dd><a ng-click="DeleteUser(User)">Close account and delete all services and info accociated with it</a></dd>
+            <dd><a ng-click="deleteUser(user)">Close account and delete all services and info associated with it</a></dd>
           </dl>
         </section>
       </div>

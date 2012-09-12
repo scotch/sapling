@@ -42,9 +42,9 @@ app.get('/', function (req, res) {
 app.get(API_BASE_URL + '/users', user.list);
 app.post(API_BASE_URL + '/users', user.create);
 app.get(API_BASE_URL + '/users/me', user.current);
-app.get(API_BASE_URL + '/users/:userid', user.read);
-app.put(API_BASE_URL + '/users/:userid', user.update);
-app.delete(API_BASE_URL + '/users/:userid', user.delete);
+app.get(API_BASE_URL + '/users/:userId', user.read);
+app.put(API_BASE_URL + '/users/:userId', user.update);
+app.delete(API_BASE_URL + '/users/:userId', user.delete);
 
 // Session
 //app.get(API_BASE_URL + '/sessions', session.list);

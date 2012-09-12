@@ -1,5 +1,6 @@
 /**
- * Simple in memory cache
+ *  **Not for production use**
+ * An inefficient in memory cache.
  * @type {MemoryStore}
  */
 var MemoryStore = function () {
@@ -13,55 +14,18 @@ var MemoryStore = function () {
     return index += 1;
   }
 
-  /**
-   * genKey create creates a key for storage based upon the kind and id.
-   * If and  id is not provided one will be created.
-   * @param kind E.g. "user"
-   * @param id E.g. "1"
-   * @return {String} E.g. 'user|1"
-   */
   function genKey(kind, id) {
     return(kind.toLowerCase() + '|' + id);
   }
 
-  function read(kind, key, callback) {
-    var obj = entities[genKey(kind, key)];
-    if (!obj) {
+  function findById(kind, id, callback) {
+    var idx = id - 1;
+    if (entities[idx]) {
+      callback(null, entities[idx]);
+    } else {
       callback(NotFound, null);
     }
-    return callback(null, obj);
   }
-
-  // TODO implement
-  function readMulti(kind, keys, objs, callback) {}
-  // TODO implement
-  function readAll(kind, keys, objs, callback) {}
-
-  function create(kind, obj, callback) {
-    obj.id = getId();
-    entities[genKey(kind, obj.id)] = obj;
-    return callback(null, obj);
-  }
-  // TODO implement
-  function createMulti(kind, objs) {}
-
-  function update(kind, key, obj, callback) {
-    var o = entities[genKey(kind, key)];
-    if (!o) {
-      return callback(NotFound, null);
-    }
-    entities[genKey(kind, key)] = obj;
-    return callback(null, obj);
-  }
-  // TODO implement
-  function updateMulti(kind, keys, callback) {}
-
-  function destroy(kind, key, callback) {
-    entities[genKey(kind, key)] = null;
-    return callback(null, null);
-  }
-  // TODO implement
-  function destroyMulti(kind, keys, callback) {}
 
   function findByAttribute(kind, attrKey, attrValue, callback) {
     for (var i = 0, len = entities.length; i < len; i++) {
@@ -72,18 +36,30 @@ var MemoryStore = function () {
     return callback(NotFound, null);
   }
 
+  function create(kind, obj, callback) {
+    obj.id = getId();
+    entities.push(obj);
+    return callback(null, obj);
+  }
+
+  function update(kind, id, obj, callback) {
+    var idx = id - 1;
+    entities[idx] = obj;
+    return callback(null, obj);
+  }
+
+  function destroy(kind, id, callback) {
+    // TODO
+    return callback(null, null);
+  }
+
   return {
     genKey: genKey,
     create: create,
-    createMulti: createMulti,
-    read: read,
-    readMulti: readMulti,
-    readAll: readAll,
+    findById: findById,
     findByAttribute: findByAttribute,
     update: update,
-    updateMulti: updateMulti,
-    destroy: destroy,
-    destroyMulti: destroyMulti
+    destroy: destroy
   };
 }();
 

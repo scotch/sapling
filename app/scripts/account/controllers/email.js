@@ -18,6 +18,6 @@ angular.module('account.controllers.email', [
     'user',
 
     function ($scope, user) {
-      $scope.emails = user.emails();
+//      $scope.emails = user.emails();
     }
   ]);

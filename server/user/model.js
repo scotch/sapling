@@ -14,8 +14,16 @@ var validateEmail = function (address) {
   return true;
 };
 
+var findById = function (id, callback) {
+  ds.findById('User', id, callback);
+};
+
 var findByEmail = function (email, callback) {
   ds.findByAttribute('User', 'email', email, callback);
+};
+
+var updateUser = function (id, user, callback) {
+  ds.update('User', id, user, callback);
 };
 
 exports.create = create = function (user, callback) {
@@ -31,7 +39,7 @@ exports.create = create = function (user, callback) {
   findByEmail(user.email, function (err, u) {
     if (!err) {
       // no error indicates that an entity was found
-      return callback(error.emailInUse, null);
+      return callback(error.emailInUseError, null);
     }
     // no entity so lets create one
     // encrypt the password using bcrypt
@@ -52,8 +60,22 @@ exports.create = create = function (user, callback) {
   });
 };
 
-exports.read = read = function (id, callback) {
-  ds.read('User', id, callback);
+exports.read = function (id, callback) {
+  ds.findById('User', id, callback);
+};
+
+exports.update = function (id, user, callback) {
+
+  // check for existing account.
+  findById(id, function (err, u) {
+
+    if (err) {
+      // An error indicates that an entity was not found
+      return callback(error.notFoundError, null);
+    }
+    // updated entity
+    updateUser(id, user, callback);
+  });
 };
 
 exports.authenticate = function (email, pass, callback) {

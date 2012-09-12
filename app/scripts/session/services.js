@@ -57,13 +57,13 @@ angular.module('session.services', [
       return ds.get('Session', sessionId, session);
     }
 
-    function create(user) {
-      return ds.create('Session', user);
+    function create(session) {
+      return ds.create('Session', session);
     }
 
-    function update(user) {
-      log.assert(user.id, 'user: id is required to preform an update');
-      return ds.update('Session', user.id, user);
+    function update(session) {
+      log.assert(session.id, 'user: id is required to preform an update');
+      return ds.update('Session', session.id, session);
     }
 
     function destroy(sessionId) {
@@ -97,16 +97,16 @@ angular.module('session.services', [
             flash.add('You must be logged in to view that. Please log.', 'warn');
             // save current location to session for post authentication redirect
             nextUrl = loginUrl;
-            $location.url(loginUrl);
+//            $location.url(loginUrl);
           }
           // if authentication is *NOT* required but user *IS* authenticated
           if (!auth && currentSession.isAuthenticated) {
             flash.add('You are already logged in', 'info');
             // TODO redirect to previous
-            $location.url('/');
+//            $location.url('/');
           }
         }
-        // is admin is set: 
+        // if admin is set:
         // E.g. `admin: true` or `admin: false`
         if (admin !== undefined ) {
           // if admin *IS* required but user is *NOT* admin
@@ -114,13 +114,13 @@ angular.module('session.services', [
             flash.add('You must be an admin to view that. Please log.', 'warn');
             // save current location to session for post authentication redirect
             nextUrl = currentUrl;
-            $location.url(loginUrl);
+//            $location.url(loginUrl);
           }
-          // if admin *NOT* required but user *IS* an admin
+          // if admin is *NOT* required but user *IS* an admin
           if (!admin && currentSession.isAdmin) {
             flash.add('You are already logged in', 'info');
             // TODO redirect to previous
-            $location.url('/');
+//            $location.url('/');
           }
         }
       }

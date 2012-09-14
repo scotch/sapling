@@ -1,0 +1,30 @@
+
+<section id="content" ng-controller="AccountOverviewCtrl">
+  <header>
+    <h1 id="section-header">Account Overview</h1>
+  </header>
+  <div class="row">
+    <div class="span2">
+      <div ng-include="'/partials/account/nav.html'"></div>&nbsp;
+    </div>
+    <section id="section-content">
+      <div class="span7">
+        <div class="row">
+          <div class="span1"><img src="http://placehold.it/80x80"/></div>
+          <div class="span6">
+            <h4>{{ user.displayName() }}</h4>
+            <p><a href="/account/profile">Edit Profile</a></p>
+          </div>
+        </div>
+        <hr/>
+        <section>
+          <h3>Services</h3>
+          <dl>
+            <dt>Delete Account</dt>
+            <dd><a ng-click="deleteUser(user)">Close account and delete all services and info associated with it</a></dd>
+          </dl>
+        </section>
+      </div>
+    </section>
+  </div>
+</section>

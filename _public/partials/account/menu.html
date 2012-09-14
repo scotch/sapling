@@ -1,0 +1,14 @@
+
+<ul class="nav pull-right">
+  <li id="user-nav" class="dropdown">
+    <span ng-hide="user.isAuthenticated()">
+      <a ng-class="getClass('/login')" href="/login">Login</a> |
+      <a ng-class="getClass('/signup')" href="/signup">Sign Up</a>
+    </span>
+    <span ng-show="user.isAuthenticated()">
+      <a ng-class="getClass('/account')" href="/account/">Account</a> |
+      <a href="/account/"><span ng-bind="user.displayName()"></span></a> |
+      <a href="" ng-click="logout()">logout</a>
+    </span>
+  </li>
+</ul>

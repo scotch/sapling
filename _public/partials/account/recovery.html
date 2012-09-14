@@ -1,0 +1,30 @@
+
+<section ng-controller="AccountRecoveryCtrl">
+  <header>
+    <h1 id="section-header">Account Recovery</h1>
+  </header>
+  <div class="row">
+    <div ng-show="user.isAuthenticated()" class="span2">
+      <div ng-include="'/partials/account/nav.html'"></div>&nbsp;
+    </div>
+    <section id="section-content">
+      <div class="span7">
+        <p>To reset your password, enter the email address you used when creating your {{ application_title }} account.</p>
+        <form name="form" novalidate="novalidate">
+          <fieldset class="control-group">
+            <label for="email" class="control-label">Email Address</label>
+            <div class="controls">
+              <input required ng-model="user.email" type="email" name="email"/>
+            </div>
+          </fieldset>
+          <fieldset class="control-group">
+            <button type="submit" ng-disabled="form.$invalid" class="btn btn-success">Submit</button>
+          </fieldset>
+        </form>
+        <div ng-hide="user.isAuthenticated()">
+          <p><small>If you don't have a {{ App.Title }} account you can <a href="/signup">create one now</a></small></p>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

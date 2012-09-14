@@ -1,0 +1,23 @@
+
+<section id="content" ng-controller="AccountEmailCtrl">
+  <header>
+    <h1 id="section-header">Account Email</h1>
+  </header>
+  <div class="row">
+    <div class="span2">
+      <div ng-include="'/partials/account/nav.html'"></div>&nbsp;
+    </div>
+    <section id="section-content">
+      <div class="span7">
+        <ul ng-repeat="e in user.emails">
+          <li>
+            <h3>{{e.address}}</h3>
+            <p>status {{e.status == 0}}</p>
+            <input type="submit" ng-show="e.status == 0" ng-click="verify(e)" value="Verify" class="btn"/><span ng-show="e.status == 0" class="label label-success">Default</span>
+            <input type="submit" ng-click="Remove(e)" value="Remove" class="btn"/>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>

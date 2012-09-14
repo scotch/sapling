@@ -1,0 +1,35 @@
+
+<section id="content" ng-controller="AccountProfileCtrl">
+  <header>
+    <h1 id="section-header">Account Profile</h1>
+  </header>
+  <div class="row">
+    <div class="span2">
+      <div ng-include="'/partials/account/nav.html'"></div>&nbsp;
+    </div>
+    <section id="section-content">
+      <div class="span7">
+        <form name="form" novalidate="novalidate" class="form-horizontal">
+          <fieldset>
+            <div class="control-group">
+              <label for="email" class="control-label"><strong>Name</strong></label>
+              <div class="controls">
+                <input required ng-model="user.name.givenName" placeholder="First" type="text" name="email" class="input-small"/>
+                <input required ng-model="user.name.familyName" placeholder="Last" type="text" name="email" class="input-small"/>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="email" class="control-label"><strong>Email</strong></label>
+              <div class="controls">
+                <input id="email" required ng-model="user.email" type="email" name="email"/><span ng-hide="form.email.$invalid || EmailError" class="help-inline"><i class="icon-ok"></i></span>
+              </div>
+            </div>
+            <div class="form-actions">
+              <input type="submit" ng-click="updateUser(user)" ng-disabled="form.$invalid || WaitText" value="{{WaitText || 'Update'}}" class="btn btn-success"/>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </div>
+</section>

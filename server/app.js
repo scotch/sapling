@@ -38,6 +38,12 @@ app.get('/', function (req, res) {
   res.render('index.html');
 });
 
+// auth
+//app.get(API_BASE_URL + '/auth/facebook', facebook.start);
+//app.get(API_BASE_URL + '/auth/facebook/callback', facebook.callback);
+//app.get(API_BASE_URL + '/auth/google', facebook.start);
+//app.get(API_BASE_URL + '/auth/google/callback', facebook.callback);
+
 // Users
 app.get(API_BASE_URL + '/users', user.list);
 app.post(API_BASE_URL + '/users', user.create);

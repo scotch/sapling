@@ -22,7 +22,7 @@
     "node": "~0.6.10 || 0.8 || 0.9"
   },
   "scripts": {
-    "start": "brunch watch --server",
+    "start": "node server/app.js",
     "test": "testacular test/config.js"
   },
   "dependencies": {
@@ -38,7 +38,7 @@
 
     "express": "3.x.x",
     "ejs": "*",
-    "bcrypt": ">= 0.7.x",
+    "bcrypt": "0.7.x",
     "passport": ">= 0.0.0",
     "passport-local": ">= 0.0.0"
   },

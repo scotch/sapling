@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "node server/app.js",
-    "test": "testacular test/config.js"
+    "test": "node_modules/testacular/bin/testacular start test/testacular.conf.js"
   },
   "dependencies": {
     "brunch": ">= 1.4 < 1.5",
@@ -44,7 +44,7 @@
     "passport-local": ">= 0.0.0"
   },
   "devDependencies": {
-    "testacular": ">= 0.0.16",
+    "testacular": ">= 0.2.0",
 
     "mocha": "*",
     "should": ">= 0.0.1"

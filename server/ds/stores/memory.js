@@ -53,13 +53,20 @@ var MemoryStore = function () {
     return callback(null, null);
   }
 
+  function clear(callback) {
+    entities = [];
+    index = 0;
+    return callback(null);
+  }
+
   return {
     genKey: genKey,
     create: create,
     findById: findById,
     findByAttribute: findByAttribute,
     update: update,
-    destroy: destroy
+    destroy: destroy,
+    clear: clear,
   };
 }();
 

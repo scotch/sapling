@@ -1,8 +1,6 @@
-var ds = require('../ds')
-  , error = require('../error')
-  , bcrypt = require('bcrypt')
-  , create
-  , read;
+var ds = require('../../ds')
+    , error = require('../../error')
+    , bcrypt = require('bcrypt');
 
 var validateEmail = function (address) {
   if (address.indexOf('@') === -1) {
@@ -19,42 +17,42 @@ var findById = function (id, callback) {
 };
 
 var findByEmail = function (email, callback) {
-  ds.findByAttribute('User', 'email', email, callback);
+  ds.findByAttribute('Password', 'email', email, callback);
 };
 
 var updateUser = function (id, user, callback) {
   ds.update('User', id, user, callback);
 };
 
-exports.create = function (user, callback) {
+exports.create = function (obj, callback) {
   // confirm the email is valid
-  if (!validateEmail(user.email)) {
+  if (!validateEmail(obj.email)) {
     return callback(error.invalidEmailError, null);
   }
   // confirm the the length of the password is valid
-  if (user.password.new.length < 4 || user.password.new.length > 34) {
+  if (obj.password.new.length < 4 || obj.password.new.length > 34) {
     return callback(error.invalidPasswordLengthError, null);
   }
   // check for existing account.
-  findByEmail(user.email, function (err, u) {
+  findByEmail(obj.email, function (err, u) {
     if (!err) {
       // no error indicates that an entity was found
       return callback(error.emailInUseError, null);
     }
     // no entity so lets create one
     // encrypt the password using bcrypt
-    bcrypt.hash(user.password.new, 10, function (err, hash) {
+    bcrypt.hash(obj.password.new, 10, function (err, hash) {
       if (err) {
         return callback(err, null);
       }
-      user.passwordHash = hash;
+      obj.passwordHash = hash;
       // strip plain text password.
-      user.password.new = '';
-      user.password.current = '';
-      user.password.isSet = true;
+      obj.password.new = '';
+      obj.password.current = '';
+      obj.password.isSet = true;
       // Save the user object.
-      ds.create('User', user, function (err, u)  {
-        return callback(err, user);
+      ds.create('Password', obj, function (err, u)  {
+        return callback(err, obj);
       });
     });
   });

@@ -10,11 +10,11 @@
   },
 	"contributors" : [
 		{
-			"name" : "Jonah Kagan",
-			"email"	: "jonahkagan@gmail.com"
+			"name": "Jonah Kagan",
+			"email": "jonahkagan@gmail.com"
 		},
 		{
-			"name" : "Khalid Jebbari",
+			"name": "Khalid Jebbari",
 			"email": "khalid.jebbari@gmail.com"
 		}
 	],
@@ -40,6 +40,7 @@
     "express": "3.x.x",
     "ejs": "*",
     "bcrypt": "0.7.x",
+    "mongoose": "3.x.x",
     "passport": ">= 0.0.0",
     "passport-local": ">= 0.0.0"
   },

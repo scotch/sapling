@@ -7,6 +7,8 @@ build.xml
 .settings
 .idea/*
 
+_public
+
 node_modules/*
 npm-debug.log
 npm-shrinkwrap.json

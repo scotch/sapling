@@ -7,7 +7,9 @@ var express = require('express')
   , session = require('./session/api')
   , fs = require('fs')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , config = require('./config')
+  , mongoose = require('mongoose');
 
 var API_BASE_URL = '/-/api/v1';
 
@@ -29,8 +31,17 @@ app.configure(function () {
   app.engine('html', require('ejs').__express);
 });
 
+app.configure('production', function () {
+  mongoose.connect(config.ds.production);
+});
+
 app.configure('development', function () {
   app.use(express.errorHandler());
+  mongoose.connect(config.ds.development);
+});
+
+app.configure('test', function () {
+  mongoose.connect(config.ds.test);
 });
 
 // Routes //

@@ -38,6 +38,14 @@ app.configure('production', function () {
 app.configure('development', function () {
   app.use(express.errorHandler());
   mongoose.connect(config.ds.development);
+  var exec = require('child_process').exec;
+  exec('node_modules/brunch/bin/brunch watch', function callback(error, stdout, stderr){
+   if (error) {
+     console.log('An error occurred while attempting to start brunch.\n' +
+                 'Make user that it is not running in another window.\n' +
+                 'Error: ', error);
+   }
+  });
 });
 
 app.configure('test', function () {

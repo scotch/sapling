@@ -5,4 +5,4 @@ module.exports = {
     development: "mongodb://localhost/sapling-dev",
     test: "mongodb://localhost/sapling-test",
   }
-}
+};

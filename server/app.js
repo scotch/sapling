@@ -28,6 +28,7 @@ app.configure(function () {
   app.use(express.session());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, '../_public')));
+  // This allows us to render *.html files using res.render('*.html')
   app.engine('html', require('ejs').__express);
 });
 
@@ -40,10 +41,11 @@ app.configure('development', function () {
   mongoose.connect(config.ds.development);
   var exec = require('child_process').exec;
   exec('node_modules/brunch/bin/brunch watch', function callback(error, stdout, stderr){
-   if (error) {
      console.log('An error occurred while attempting to start brunch.\n' +
-                 'Make user that it is not running in another window.\n' +
-                 'Error: ', error);
+                 'Make sure that it is not running in another window.\n');
+   if (error) {
+     throw error;
+
    }
   });
 });

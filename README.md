@@ -109,7 +109,6 @@ When we upgrade sapling's repo, you can just fetch the changes and merge them in
     node_modules              --> NodeJS modules
 
     scripts/                  --> handy shell scripts
-      compile-jade.sh         --> compiles jade to html
       compile-tests.sh        --> compiles coffeescript test to javascript
       development.sh          --> compiles files and watches for changes
       init.sh                 --> installs node modules

@@ -10,6 +10,8 @@ beforeEach (done) ->
       mongoose.connection.collections[i].remove ->
     done()
 
+  unless process.env.NODE_ENV is 'test'
+    process.env.NODE_ENV = 'test'
   unless mongoose.connection.db
     mongoose.connect config.ds.test, (err) ->
       throw err  if err

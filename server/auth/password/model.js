@@ -11,15 +11,13 @@ var BCRYPT_COST = 10;
 
 
 var passwordSchema = new Schema({
-  userId : Schema.ObjectId,
-  provider: {type: String, default: 'local'},
+  userId : { type: Schema.ObjectId, unique: true, required: true },
+  provider: { type: String, default: 'local' },
   passwordHash: String,
   created: Date,
 });
 
-var Password = mongoose.model('Password', passwordSchema);
-
-Password.schema.path('created')
+passwordSchema.path('created')
   .default(function () {
     return new Date();
   })
@@ -27,14 +25,18 @@ Password.schema.path('created')
     return v === 'now' ? new Date() : v;
   });
 
-exports.create = function (userId, passwordRaw, callback) {
+passwordSchema.statics.new = function (userId, passwordRaw, callback) {
+
+  // To speed up tests
+  if (process.env.NODE_ENV === 'test') {
+    BCRYPT_COST = 1;
+  }
 
   // confirm the the length of the password is valid
   if (passwordRaw.length <= PASSWORD_LENGTH_MIN || passwordRaw.length >= PASSWORD_LENGTH_MAX) {
     return callback(error.invalidPasswordLengthError, null);
   }
-  // check for existing account.
-  // TODO
+
   // no entity so lets create one
   // encrypt the password using bcrypt
   bcrypt.hash(passwordRaw, BCRYPT_COST, function (err, hash) {
@@ -42,7 +44,7 @@ exports.create = function (userId, passwordRaw, callback) {
       return callback(err, null);
     }
     var p = Password();
-//    p.userId = userId;
+    p.userId = userId;
     p.passwordHash = hash;
     p.save(function (err) {
       return callback(err, p);
@@ -50,23 +52,21 @@ exports.create = function (userId, passwordRaw, callback) {
   });
 };
 
-exports.getByUserId = getByUserId = function (userId, callback) {
+passwordSchema.statics.getByUserId = getByUserId = function (userId, callback) {
   Password.findOne({userId: userId}, callback);
 };
 
-exports.authenticate = function (userId, pass, callback) {
-
-  getByUserId(userId, function (err, p) {
+passwordSchema.statics.authenticate = function (userId, pass, callback) {
+  Password.findOne({userId: userId}, function (err, p) {
     if (!p) {
       callback(err, false);
     } else {
-      bcrypt.compare(p.passwordHash, pass, function (err, res) {
-        if (res) {
-          callback(null, p);
-        } else {
-          callback(error.invalidPasswordError, null);
-        }
-      });
+
+      bcrypt.compare(pass, p.passwordHash, callback);
     }
   });
 };
+
+var Password = mongoose.model('Password', passwordSchema);
+
+exports.Password = Password;

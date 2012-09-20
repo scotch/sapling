@@ -1,58 +1,59 @@
 require '../../utils'
-#require("mocha-mongoose")
 should = require 'should'
-password = require '../../../auth/password/model'
-#mongoose = require('mongoose')
+Password = require('../../../auth/password/model').Password
+
 
 describe 'Password', ->
 
-  describe '#create()', ->
-    describe 'New Password for user', ->
-      it 'should create a new password entity when the info is vaild', (done) ->
-        password.create '000000000000000000000001', 'pass1', (err, p) ->
+  describe '#new()', ->
+
+    userId = '000000000000000000000001'
+
+    it 'should create a new password entity when the info is vaild', (done) ->
+      Password.new userId, 'pass1', (err, p) ->
+        should.not.exist err
+        should.exist p._id
+        should.exist p.created
+        should.exist p.passwordHash
+        String(p.userId).should.equal userId
+        p.provider.should.equal 'local'
+        Password.findOne {userId: userId}, (err, u) ->
+          String(p.userId).should.equal userId
+          done()
+
+    it 'should return an error when the password is to short', (done) ->
+      Password.new userId, 'pas', (err, p) ->
+        should.exist err
+        err.code.should.equal 11
+        err.message.should.equal 'invalid password length'
+        should.not.exist p
+        done()
+
+    it 'should return an error if the user has already created a password', (done) ->
+        Password.new userId, 'pass1', (err, p) ->
           should.not.exist err
-          should.exist p._id
-          should.exist p.created
-          should.exist p.passwordHash
-          p.provider.should.equal 'local'
-          done()
-#      it 'should return an error if user already has already created a password', (done) ->
-#        userId = '000000000000000000000001'
-#        password.create userId, 'pass1', (err, p) ->
-##          should.not.exist err
-#          password.create userId, 'pass1', (err, p) ->
-##            should.exist err
-##            err.code.should.equal 11
-##            err.message.should.equal 'user'
-#            done()
+          Password.new userId, 'pass1', (err, p) ->
+            err.code.should.equal 11000
+            should.exist err
+            done()
 
-      it 'should return a "invalid password length" error, when the password is to short', (done) ->
-        password.create '000000000000000000000001', 'pas', (err, p) ->
-          should.exist err
-          err.code.should.equal 11
-          err.message.should.equal 'invalid password length'
-          should.not.exist p
-          done()
+  describe '#authenticate()', ->
 
-#    describe 'Existing User', ->
-#      it 'should return an "email in use" error when an exsiting user trieds to create a new account', (done) ->
-#        obj1 =
-#          email: 'test@example.com'
-#          password:
-#            new: 'password1'
-#            current: ''
-#        obj2 =
-#          email: 'test@example.com'
-#          password:
-#            new: 'password1'
-#            current: ''
-#        # this ones fine.
-#        password.create obj1, (err, o) ->
-#          should.not.exist err
-#
-#          # this is the duplicate.
-#          password.create obj2, (err, o) ->
-#            err.code.should.equal 13
-#            err.message.should.equal 'email in use'
-#            should.not.exist o
-#            done()
+    userId = '000000000000000000000001'
+    pass = 'pass1'
+
+    beforeEach (done) ->
+      Password.new userId, pass, (err, p) ->
+        done()
+
+    it 'should return true when password is vaild', (done) ->
+      Password.authenticate userId, pass, (err, valid) ->
+        should.not.exist err
+        valid.should.equal true
+        done()
+
+    it 'should return false when password is invaild', (done) ->
+      Password.authenticate userId, 'fake', (err, valid) ->
+        should.not.exist err
+        valid.should.equal false
+        done()

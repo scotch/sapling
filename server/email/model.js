@@ -11,9 +11,7 @@ var emailSchema = new Schema({
   created : Date,
 });
 
-var Email = mongoose.model('Email', emailSchema);
-
-Email.schema.path('created')
+emailSchema.path('created')
   .default(function () {
     return new Date();
   })
@@ -21,12 +19,12 @@ Email.schema.path('created')
     return v === 'now' ? new Date() : v;
   });
 
-Email.schema.path('address')
+emailSchema.path('address')
     .validate(function (value) {
       return utils.validateEmail(value);
     }, 'Invalid address');
 
-exports.create = function (email, status, callback) {
+emailSchema.statics.new = function (email, status, callback) {
   var e = new Email();
   e._id = email;
   e.address = email;
@@ -36,10 +34,16 @@ exports.create = function (email, status, callback) {
   });
 };
 
-exports.get = function (email, callback) {
+emailSchema.statics.get = function (email, callback) {
   Email.findOne({_id: email}, function (err, e) {
     return callback(err, e);
   });
 };
+
+
+var Email = mongoose.model('Email', emailSchema);
+
+
+exports.Email = Email;
 
 

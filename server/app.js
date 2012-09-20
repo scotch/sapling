@@ -45,7 +45,6 @@ app.configure('development', function () {
                  'Make sure that it is not running in another window.\n');
    if (error) {
      throw error;
-
    }
   });
 });

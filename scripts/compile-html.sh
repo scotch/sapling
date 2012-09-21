@@ -1,3 +1,3 @@
 #!/bin/bash
 
-jade app/assets -P
+node_modules/.bin/jade app/assets -P

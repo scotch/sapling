@@ -1,5 +1,6 @@
 module.exports = {
-  SUCCESS_URL: '/',
+  LOGIN_URL: '/login',
+  SUCCESS_REDIRECT_URL: '/',
   FAILURE_REDIRECT_URL: '/login',
     dc: {
         appId: '7ab1a53d-9d0e-4eeb-af62-76a5e1a83af9'

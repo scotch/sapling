@@ -9,7 +9,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , config = require('./config')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , SessionMongoose = require('session-mongoose');
 
 var API_BASE_URL = '/-/api/v1';
 
@@ -25,32 +26,28 @@ app.configure(function () {
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
+  app.use(express.session({
+    store: new SessionMongoose({
+      url: config.ds[app.settings.env]
+    })
+  }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, '../_public')));
   // This allows us to render *.html files using res.render('*.html')
   app.engine('html', require('ejs').__express);
-});
-
-app.configure('production', function () {
-  mongoose.connect(config.ds.production);
+  mongoose.connect(config.ds[app.settings.env]);
 });
 
 app.configure('development', function () {
   app.use(express.errorHandler());
-  mongoose.connect(config.ds.development);
   var exec = require('child_process').exec;
   exec('node_modules/brunch/bin/brunch watch', function callback(error, stdout, stderr){
-     console.log('An error occurred while attempting to start brunch.\n' +
-                 'Make sure that it is not running in another window.\n');
    if (error) {
+     console.log('An error occurred while attempting to start brunch.\n' +
+         'Make sure that it is not running in another window.\n');
      throw error;
    }
   });
-});
-
-app.configure('test', function () {
-  mongoose.connect(config.ds.test);
 });
 
 // Routes //
@@ -90,8 +87,8 @@ app.put(API_BASE_URL + '/sessions/me', session.update);
 // 4. Caught by the '/' handler passed to Angular
 // 5. Angular will check for '#/signup' against it's routes.
 // 6. If found
-//  a. Browser supports history api -- change the url to '/signup'.
-//  b. Browser does not support history api -- keep the url '/#/signup'
+//    a. Browser supports history api -- change the url to '/signup'.
+//    b. Browser does not support history api -- keep the url '/#/signup'
 app.use(function (req, res) {
   res.redirect('/#' + req.path);
 });

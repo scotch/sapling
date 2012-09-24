@@ -2,22 +2,21 @@
 var error = require('../../error')
   , bcrypt = require('bcrypt')
   , mongoose = require('mongoose')
-  , Schema = mongoose.Schema
-  , getByUserId;
+  , Schema = mongoose.Schema;
 
 var PASSWORD_LENGTH_MIN = 4;
 var PASSWORD_LENGTH_MAX = 34;
-var BCRYPT_COST = 10;
+var BCRYPT_COST = 12;
 
 
 var passwordSchema = new Schema({
   userId : { type: Schema.ObjectId, unique: true, required: true },
   provider: { type: String, default: 'local' },
   passwordHash: String,
-  created: Date,
+  createdAt: Date,
 });
 
-passwordSchema.path('created')
+passwordSchema.path('createdAt')
   .default(function () {
     return new Date();
   })
@@ -52,7 +51,7 @@ passwordSchema.statics.new = function (userId, passwordRaw, callback) {
   });
 };
 
-passwordSchema.statics.getByUserId = getByUserId = function (userId, callback) {
+passwordSchema.statics.getByUserId = function (userId, callback) {
   Password.findOne({userId: userId}, callback);
 };
 

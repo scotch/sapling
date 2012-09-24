@@ -13,7 +13,7 @@ describe 'Password', ->
       Password.new userId, 'pass1', (err, p) ->
         should.not.exist err
         should.exist p._id
-        should.exist p.created
+        should.exist p.createdAt
         should.exist p.passwordHash
         String(p.userId).should.equal userId
         p.provider.should.equal 'local'

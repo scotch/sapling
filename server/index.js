@@ -12,7 +12,15 @@ var express = require('express')
   , mongoose = require('mongoose')
   , SessionMongoose = require('session-mongoose');
 
+
+// Authentication imports
+var auth = require('./auth/routes')
+  , password = require('./auth/password/routes')
+  , passport = require('passport');
+//  , FacebookStrategy = require('passport-facebook').Strategy;
+
 var API_BASE_URL = '/-/api/v1';
+var AUTH_URL = '/-/auth';
 
 express.cookieParser('secret');
 var app = express();
@@ -32,10 +40,13 @@ app.configure(function () {
     })
   }));
   app.use(app.router);
+  app.use(express.compress());
   app.use(express.static(path.join(__dirname, '../_public')));
   // This allows us to render *.html files using res.render('*.html')
   app.engine('html', require('ejs').__express);
   mongoose.connect(config.ds[app.settings.env]);
+  app.use(passport.initialize());
+  app.use(passport.session());
 });
 
 app.configure('development', function () {
@@ -56,7 +67,12 @@ app.get('/', function (req, res) {
 });
 
 // auth
-//app.get(API_BASE_URL + '/auth/facebook', facebook.start);
+app.post(AUTH_URL + '/logout', auth.logout);
+// Password
+app.post(AUTH_URL + '/password', password.start);
+// Facebook
+
+// Google
 //app.get(API_BASE_URL + '/auth/facebook/callback', facebook.callback);
 //app.get(API_BASE_URL + '/auth/google', facebook.start);
 //app.get(API_BASE_URL + '/auth/google/callback', facebook.callback);

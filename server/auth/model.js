@@ -35,7 +35,7 @@ authProfileSchema.path('createdAt')
       return v === 'now' ? new Date() : v;
     });
 
-authProfileSchema.statics.new = function (provider, id, userId, profile, callback) {
+authProfileSchema.statics.new = function (provider, id, userId, profile, fn) {
   var c = new AuthProfile();
   c._id = genAuthId(provider, id);
   c.userId = userId;
@@ -43,12 +43,12 @@ authProfileSchema.statics.new = function (provider, id, userId, profile, callbac
   c.profile.provider = provider;
   c.profile.id = id;
   c.save(function (err) {
-    return callback(err, c);
+    return fn(err, c);
   });
 };
 
-authProfileSchema.statics.get = function (provider, id, callback) {
-  AuthProfile.findOne({_id: genAuthId(provider, id)}, callback);
+authProfileSchema.statics.get = function (provider, id, fn) {
+  AuthProfile.findOne({_id: genAuthId(provider, id)}, fn);
 };
 
 var AuthProfile = mongoose.model('AuthProfile', authProfileSchema);

@@ -24,19 +24,19 @@ emailSchema.path('address')
       return utils.validateEmail(value);
     }, 'Invalid address');
 
-emailSchema.statics.new = function (email, status, callback) {
+emailSchema.statics.new = function (email, status, fn) {
   var e = new Email();
   e._id = email;
   e.address = email;
   e.status = status;
   e.save(function (err) {
-    return callback(err, e);
+    return fn(err, e);
   });
 };
 
-emailSchema.statics.get = function (email, callback) {
+emailSchema.statics.get = function (email, fn) {
   Email.findOne({_id: email}, function (err, e) {
-    return callback(err, e);
+    return fn(err, e);
   });
 };
 

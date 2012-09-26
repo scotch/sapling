@@ -18,45 +18,45 @@ var MemoryStore = function () {
     return(kind.toLowerCase() + '|' + id);
   }
 
-  function findById(kind, id, callback) {
+  function findById(kind, id, fn) {
     var idx = id - 1;
     if (entities[idx]) {
-      callback(null, entities[idx]);
+      fn(null, entities[idx]);
     } else {
-      callback(NotFound, null);
+      fn(NotFound, null);
     }
   }
 
-  function findByAttribute(kind, attrKey, attrValue, callback) {
+  function findByAttribute(kind, attrKey, attrValue, fn) {
     for (var i = 0, len = entities.length; i < len; i++) {
       if (entities[i][attrKey] === attrValue) {
-        return callback(null, entities[i]);
+        return fn(null, entities[i]);
       }
     }
-    return callback(NotFound, null);
+    return fn(NotFound, null);
   }
 
-  function create(kind, obj, callback) {
+  function create(kind, obj, fn) {
     obj.id = getId();
     entities.push(obj);
-    return callback(null, obj);
+    return fn(null, obj);
   }
 
-  function update(kind, id, obj, callback) {
+  function update(kind, id, obj, fn) {
     var idx = id - 1;
     entities[idx] = obj;
-    return callback(null, obj);
+    return fn(null, obj);
   }
 
-  function destroy(kind, id, callback) {
+  function destroy(kind, id, fn) {
     // TODO
-    return callback(null, null);
+    return fn(null, null);
   }
 
-  function clear(callback) {
+  function clear(fn) {
     entities = [];
     index = 0;
-    return callback(null);
+    return fn(null);
   }
 
   return {

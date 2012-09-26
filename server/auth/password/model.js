@@ -24,7 +24,7 @@ passwordSchema.path('createdAt')
     return v === 'now' ? new Date() : v;
   });
 
-passwordSchema.statics.new = function (userId, passwordRaw, callback) {
+passwordSchema.statics.new = function (userId, passwordRaw, fn) {
 
   // To speed up tests
   if (process.env.NODE_ENV === 'test') {
@@ -33,35 +33,35 @@ passwordSchema.statics.new = function (userId, passwordRaw, callback) {
 
   // confirm the the length of the password is valid
   if (passwordRaw.length <= PASSWORD_LENGTH_MIN || passwordRaw.length >= PASSWORD_LENGTH_MAX) {
-    return callback(error.invalidPasswordLengthError, null);
+    return fn(error.invalidPasswordLengthError, null);
   }
 
   // no entity so lets create one
   // encrypt the password using bcrypt
   bcrypt.hash(passwordRaw, BCRYPT_COST, function (err, hash) {
     if (err) {
-      return callback(err, null);
+      return fn(err, null);
     }
     var p = Password();
     p.userId = userId;
     p.passwordHash = hash;
     p.save(function (err) {
-      return callback(err, p);
+      return fn(err, p);
     });
   });
 };
 
-passwordSchema.statics.getByUserId = function (userId, callback) {
-  Password.findOne({userId: userId}, callback);
+passwordSchema.statics.getByUserId = function (userId, fn) {
+  Password.findOne({userId: userId}, fn);
 };
 
-passwordSchema.statics.authenticate = function (userId, pass, callback) {
+passwordSchema.statics.authenticate = function (userId, pass, fn) {
   Password.findOne({userId: userId}, function (err, p) {
     if (!p) {
-      callback(err, false);
+      fn(err, false);
     } else {
 
-      bcrypt.compare(pass, p.passwordHash, callback);
+      bcrypt.compare(pass, p.passwordHash, fn);
     }
   });
 };

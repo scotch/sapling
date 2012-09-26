@@ -13,25 +13,25 @@ var configSchema = new Schema({
   data  : Schema.Types.Mixed,
 });
 
-configSchema.statics.new = newConfig = function (id, obj, callback) {
+configSchema.statics.new = newConfig = function (id, obj, fn) {
   var c = new Config();
   c._id = id;
   c.data = obj;
   c.save(function (err) {
-    return callback(err, c);
+    return fn(err, c);
   });
 };
 
-configSchema.statics.get = function (id, callback) {
-  Config.findOne({_id: id}, callback);
+configSchema.statics.get = function (id, fn) {
+  Config.findOne({_id: id}, fn);
 };
 
-configSchema.statics.getOrInsert = function (id, obj, callback) {
+configSchema.statics.getOrInsert = function (id, obj, fn) {
   Config.findOne({_id: id}, function (err, c) {
     if (c) {
-      return callback(err, c);
+      return fn(err, c);
     } else{
-      newConfig(id, obj, callback);
+      newConfig(id, obj, fn);
     }
   });
 };

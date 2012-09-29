@@ -1,6 +1,9 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    utils = require('./utils');
+'use strict';
+
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var utils = require('./utils');
+var Email;
 
 
 var emailSchema = new Schema({
@@ -15,14 +18,14 @@ emailSchema.path('created')
   .default(function () {
     return new Date();
   })
-  .set(function(v){
+  .set(function (v) {
     return v === 'now' ? new Date() : v;
   });
 
 emailSchema.path('address')
-    .validate(function (value) {
-      return utils.validateEmail(value);
-    }, 'Invalid address');
+  .validate(function (value) {
+    return utils.validateEmail(value);
+  }, 'Invalid address');
 
 emailSchema.statics.new = function (email, status, fn) {
   var e = new Email();
@@ -40,10 +43,4 @@ emailSchema.statics.get = function (email, fn) {
   });
 };
 
-
-var Email = mongoose.model('Email', emailSchema);
-
-
-exports.Email = Email;
-
-
+exports.Email = Email = mongoose.model('Email', emailSchema);

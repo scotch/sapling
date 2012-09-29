@@ -1,26 +1,34 @@
+'use strict';
 
-var error = require('../../error')
-  , bcrypt = require('bcrypt')
-  , mongoose = require('mongoose')
-  , Schema = mongoose.Schema;
+var error = require('../../error');
+var bcrypt = require('bcrypt');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var Password;
 
+// Constants
 var PASSWORD_LENGTH_MIN = 4;
 var PASSWORD_LENGTH_MAX = 34;
 var BCRYPT_COST = 12;
 
 
 var passwordSchema = new Schema({
-  userId : { type: Schema.ObjectId, unique: true, required: true },
-  provider: { type: String, default: 'local' },
-  passwordHash: String,
+  provider: {
+    name: { type: String, default: 'local' },
+    url: { type: String, default: 'local' },
+  },
+  auth: {
+    passwordHash: String,
+  },
   createdAt: Date,
-});
+  userId : { type: Schema.ObjectId, unique: true, required: true },
+}, { collection: 'authprofiles' });
 
 passwordSchema.path('createdAt')
   .default(function () {
     return new Date();
   })
-  .set(function(v){
+  .set(function (v) {
     return v === 'now' ? new Date() : v;
   });
 
@@ -42,9 +50,9 @@ passwordSchema.statics.new = function (userId, passwordRaw, fn) {
     if (err) {
       return fn(err, null);
     }
-    var p = Password();
+    var p = new Password();
     p.userId = userId;
-    p.passwordHash = hash;
+    p.auth.passwordHash = hash;
     p.save(function (err) {
       return fn(err, p);
     });
@@ -61,11 +69,9 @@ passwordSchema.statics.authenticate = function (userId, pass, fn) {
       fn(err, false);
     } else {
 
-      bcrypt.compare(pass, p.passwordHash, fn);
+      bcrypt.compare(pass, p.auth.passwordHash, fn);
     }
   });
 };
 
-var Password = mongoose.model('Password', passwordSchema);
-
-exports.Password = Password;
+exports.Password = Password = mongoose.model('Password', passwordSchema);

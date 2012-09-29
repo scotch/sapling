@@ -14,9 +14,9 @@ describe 'Password', ->
         should.not.exist err
         should.exist p._id
         should.exist p.createdAt
-        should.exist p.passwordHash
+        should.exist p.auth.passwordHash
         String(p.userId).should.equal userId
-        p.provider.should.equal 'local'
+        p.provider.name.should.equal 'local'
         Password.findOne {userId: userId}, (err, u) ->
           String(p.userId).should.equal userId
           done()

@@ -1,11 +1,14 @@
+'use strict';
+
 /**
  * auth provides persisted auth. This is useful for auth settings that can
  * be set through an admin interface.
  */
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    genAuthId;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var genAuthId;
+var AuthProfile;
 
 
 exports.genAuthId = genAuthId = function (provider, id) {
@@ -28,12 +31,12 @@ var authProfileSchema = new Schema({
 });
 
 authProfileSchema.path('createdAt')
-    .default(function () {
-      return new Date();
-    })
-    .set(function(v){
-      return v === 'now' ? new Date() : v;
-    });
+  .default(function () {
+    return new Date();
+  })
+  .set(function (v) {
+    return v === 'now' ? new Date() : v;
+  });
 
 authProfileSchema.statics.new = function (provider, id, userId, profile, fn) {
   var c = new AuthProfile();
@@ -51,6 +54,4 @@ authProfileSchema.statics.get = function (provider, id, fn) {
   AuthProfile.findOne({_id: genAuthId(provider, id)}, fn);
 };
 
-var AuthProfile = mongoose.model('AuthProfile', authProfileSchema);
-
-exports.AuthProfile = AuthProfile;
+exports.AuthProfile = AuthProfile = mongoose.model('AuthProfile', authProfileSchema);

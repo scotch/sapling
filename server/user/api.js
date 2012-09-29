@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * User API Routes.
  */
@@ -5,12 +7,12 @@
 var user = require("./model");
 
 // GET */users
-exports.list = function(req, res) {
+exports.list = function (req, res) {
   res.send('not implemented');
 };
 
 // PUT */users
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   // Create a new user
   user.create(req.body, function (err, u) {
     if (err) {
@@ -33,7 +35,7 @@ exports.create = function(req, res) {
 };
 
 // GET */users/{id}
-exports.read = function(req, res) {
+exports.read = function (req, res) {
   // get the user by the user id.
   user.read(req.params.userId, function (err, u) {
     // strip passwordHash -- we don't want to return it to the client
@@ -44,7 +46,7 @@ exports.read = function(req, res) {
 };
 
 // PUT */users/{id}
-exports.update = function(req, res) {
+exports.update = function (req, res) {
   // get the user by the user id.
   // a user can only update their own entity
   // TODO admin should be able to modify all.
@@ -60,7 +62,7 @@ exports.update = function(req, res) {
 };
 
 // DELETE */users/{id}
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
   // get the user by the user id.
   user.delete(req.params.userId, function (err) {
     // send the found user back to the client
@@ -69,7 +71,7 @@ exports.delete = function(req, res) {
 };
 
 // GET */users/me
-exports.current = function(req, res) {
+exports.current = function (req, res) {
   // if there is no userId return not found 401 Unauthorized
   if (!req.session.userId) {
     return res.send(401); // Unauthorized

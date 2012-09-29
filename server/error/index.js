@@ -1,8 +1,12 @@
+'use strict';
+
 /**
- * Application wide error codes
+ * Application wide error codes.
  * @type {ErrorCodes}
  */
 
+// TODO: is it a good idea to have errors all in one place? Maybe errors should
+// be located in their respective modules.
 // Grab the util module that's bundled with Node
 var util = require('util');
 

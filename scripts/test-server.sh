@@ -1,3 +1,3 @@
 #!/bin/bash
 
-node_modules/.bin/mocha -w server/test/**/*
+node_modules/.bin/mocha

@@ -1,4 +1,6 @@
 --require should
--R spec
+--reporter spec
 --ui bdd
 --compilers coffee:coffee-script
+--recursive
+--watch server/test

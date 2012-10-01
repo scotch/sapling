@@ -2,23 +2,23 @@ require '../utils'
 request = require 'supertest'
 app = require('../..').app
 should = require 'should'
-mongoose = require 'mongoose'
 
 
-describe.only 'User: API', ->
+describe 'User: api', ->
 
   baseUrl = '/-/api/v1/users'
 
   describe 'POST /-/api/v1/users', ->
 
-    it 'should create a new user', (done) ->
+    it 'should create a new user if request is valid', (done) ->
       obj =
         id: ''
         name:
-          giveName: 'Jack'
-          familyName: 'Scorn'
+          givenName: 'Micheal'
           middleName: '"Danger"'
-        email: 'jack@example.com'
+          familyName: 'Scorn'
+        emails:
+          value: 'scorn@example.com'
         username: 'agentscorn'
 
       request(app)
@@ -27,6 +27,12 @@ describe.only 'User: API', ->
         .set('Accept', 'application/json')
         .expect(201)
         .end (err, res) ->
+          u = JSON.parse(res.text)
+          #console.log u
           should.not.exist err
-          res.text.should.equal 'Unauthorized'
+          should.exist u.id
+          u.name.givenName.should.equal 'Micheal'
+          u.name.middleName.should.equal '"Danger"'
+          u.name.familyName.should.equal 'Scorn'
+          u.username.should.equal 'agentscorn'
           done()

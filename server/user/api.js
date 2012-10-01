@@ -13,8 +13,11 @@ exports.list = function (req, res) {
 
 // PUT */users
 exports.create = function (req, res) {
+  //console.log(req.body);
   // Create a new user
-  user.create(req.body, function (err, u) {
+  user.User.createFromProfile(req.body, function (err, u) {
+    //console.log('err: ', err);
+    //console.log('user: ', u.toObject());
     if (err) {
       // TODO handle server error
       // if invalid request send 400 Bad Request along with error.
@@ -26,11 +29,11 @@ exports.create = function (req, res) {
       return res.send(400, err);
     }
     // Add the user id to the session
-    req.session.userId = u.id;
+    //req.session.userId = u.id;
     // strip passwordHash -- we don't want to return it to the client
-    delete u.passwordHash;
+    //delete u.passwordHash;
     // send the newly created user back to the client.
-    return res.send(u);
+    return res.send(201, u.getProfile());
   });
 };
 

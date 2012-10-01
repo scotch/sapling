@@ -32,6 +32,7 @@ describe 'Config', ->
 
     obj =
       prop: 'original'
+
     it 'should get or insert a new config entity', (done) ->
       Config.getOrInsert 'akey', obj, (err, c) ->
         c.data.prop.should.equal 'original'

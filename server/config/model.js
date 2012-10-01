@@ -1,12 +1,16 @@
+'use strict';
+
 /**
  * config provides persisted config. This is useful for config settings that can
  * be set through an admin interface.
  */
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    newConfig,
-    cnfg = {};
+// TODO: added a lay of persistence, perhaps in instance memory.
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var Config;
+var newConfig;
 
 var configSchema = new Schema({
   _id   : String,
@@ -30,14 +34,10 @@ configSchema.statics.getOrInsert = function (id, obj, fn) {
   Config.findOne({_id: id}, function (err, c) {
     if (c) {
       return fn(err, c);
-    } else{
-      newConfig(id, obj, fn);
     }
+    return newConfig(id, obj, fn);
   });
 };
 
-var Config = mongoose.model('Config', configSchema);
 
-exports.Config = Config;
-
-
+exports.Config = Config =  mongoose.model('Config', configSchema);

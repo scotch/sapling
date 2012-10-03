@@ -46,7 +46,7 @@ describe('user.services::', function () {
 
       $httpBackend.expectGET(url).respond(resp);
 
-      p = user.get('1');
+      var p = user.get('1');
       p.success(function (u, status) {
         expect(u.id).toBe('1');
         expect(u.name.givenName).toBe('Kyle');
@@ -71,7 +71,7 @@ describe('user.services::', function () {
 
       $httpBackend.expectGET(url).respond(404, resp);
 
-      p = user.get('2');
+      var p = user.get('2');
       p.success(function (u, status) {
         expect(u).toBe(null);
       });
@@ -280,7 +280,7 @@ describe('user.services::', function () {
 
       $httpBackend.expectGET(url).respond(resp);
 
-      u = user.current();
+      var u = user.current();
       $httpBackend.flush();
 
       expect(u.id).toBe('1');

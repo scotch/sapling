@@ -13,7 +13,6 @@ exports.list = function (req, res) {
 
 // PUT */users
 exports.create = function (req, res) {
-  //console.log(req.body);
   // Create a new user
   user.User.createFromProfile(req.body, function (err, u) {
     //console.log('err: ', err);
@@ -40,11 +39,9 @@ exports.create = function (req, res) {
 // GET */users/{id}
 exports.read = function (req, res) {
   // get the user by the user id.
-  user.read(req.params.userId, function (err, u) {
-    // strip passwordHash -- we don't want to return it to the client
-    delete u.passwordHash;
+  user.User.findById(req.params.userId, function (err, u) {
     // send the found user back to the client
-    return res.send(u);
+    return res.send(u.getProfile());
   });
 };
 

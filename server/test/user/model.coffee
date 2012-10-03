@@ -26,7 +26,9 @@ describe 'User: model', ->
         p.name.givenName.should.equal 'Kyle'
         p.name.familyName.should.equal 'Finley'
         p.username.should.equal 'kfinley'
-        #u.email.should.equal 'test@example.com'
+        u.profile.emails[0].value.should.equal 'test@example.com'
+        u.profile.emails[0].status.should.equal 3
+        u.profile.emails[0].primary.should.equal true
         done()
 
   describe '#findByEmailOrUsername()', ->
@@ -64,7 +66,12 @@ describe 'User: model', ->
             should.not.exist err
             String(u2._id).should.equal String(u1._id)
             p = u2.getProfile()
+            p.emails[0]._id.should.equal 'test@example.com'
             p.emails[0].value.should.equal 'test@example.com'
+            p.emails[0].status.should.equal 3
+            p.emails[0].primary.should.equal true
+            p.emails[1]._id.should.equal 'new@example.com'
             p.emails[1].value.should.equal 'new@example.com'
             p.emails[1].status.should.equal 0
+            p.emails[1].primary.should.equal false
             done()

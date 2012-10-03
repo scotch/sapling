@@ -38,6 +38,7 @@ var Errors = function () {
   var ApiError = function (code, msg) {
     ApiError.super_.call(this, code, msg, this.constructor);
   };
+
   util.inherits(ApiError, AbstractError);
 
   ApiError.prototype.message = 'API Error';
@@ -45,10 +46,9 @@ var Errors = function () {
     AbstractError: AbstractError,
     ApiError: ApiError,
     invalidEmailError:           new ApiError(10, 'invalid email address'),
-    invalidPasswordLengthError:  new ApiError(11, 'invalid password length'),
-    invalidPasswordError:        new ApiError(12, 'invalid password or email'),
-    emailInUseError:             new ApiError(13, 'email in use'),
-    notFoundError:               new ApiError(404, 'entity not found'),
+    emailInUseError:             new ApiError(11, 'email in use'),
+    invalidPasswordLengthError:  new ApiError(12, 'invalid password length'),
+    notFoundError:               new ApiError(404, 'entity not found')
   };
 }();
 

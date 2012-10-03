@@ -5,9 +5,9 @@ Password = require('../../../auth/password/model').Password
 
 describe 'Password', ->
 
-  describe '#new()', ->
+  userId = '000000000000000000000001'
 
-    userId = '000000000000000000000001'
+  describe '#new()', ->
 
     it 'should create a new password entity when the info is vaild', (done) ->
       Password.new userId, 'pass1', (err, p) ->
@@ -24,7 +24,7 @@ describe 'Password', ->
     it 'should return an error when the password is to short', (done) ->
       Password.new userId, 'pas', (err, p) ->
         should.exist err
-        err.code.should.equal 11
+        err.code.should.equal 12
         err.message.should.equal 'invalid password length'
         should.not.exist p
         done()
@@ -39,7 +39,6 @@ describe 'Password', ->
 
   describe '#authenticate()', ->
 
-    userId = '000000000000000000000001'
     pass = 'pass1'
 
     beforeEach (done) ->

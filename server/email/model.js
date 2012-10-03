@@ -3,13 +3,18 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var utils = require('./utils');
-var Email;
+
+// Constants
+var UNVERIFIED = 0;
+var PENDING = 1;
+var VERIFIED = 2;
+var PRIMARY = 3;
 
 
 var emailSchema = new Schema({
   _id     : String,
-  address : { type: String, required: true, lowercase: true, trim: true},
-  userId  : { type: Schema.ObjectId },
+  value   : { type: String, required: true, lowercase: true, trim: true},
+  type    : { type: String },
   status  : { type: Number, default: 0 },
   created : Date,
 });
@@ -22,25 +27,21 @@ emailSchema.path('created')
     return v === 'now' ? new Date() : v;
   });
 
-emailSchema.path('address')
-  .validate(function (value) {
-    return utils.validateEmail(value);
+// validate that the email address is valid.
+emailSchema.path('value')
+  .validate(function (v) {
+    return utils.validateEmail(v);
   }, 'Invalid address');
 
-emailSchema.statics.new = function (email, status, fn) {
-  var e = new Email();
-  e._id = email;
-  e.address = email;
-  e.status = status;
-  e.save(function (err) {
-    return fn(err, e);
+// Set the _id to the value, aka email address for easier look up.
+emailSchema.path('_id')
+  .get(function (v) {
+    return this.value;
   });
-};
 
-emailSchema.statics.get = function (email, fn) {
-  Email.findOne({_id: email}, function (err, e) {
-    return fn(err, e);
+emailSchema.virtual('primary')
+  .get(function (v) {
+    return this.status === 3;
   });
-};
 
-exports.Email = Email = mongoose.model('Email', emailSchema);
+exports.Email = mongoose.model('Email', emailSchema);

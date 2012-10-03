@@ -1,6 +1,6 @@
 'use strict';
 
-var error = require('../../error');
+var errors = require('../../errors');
 var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -41,7 +41,7 @@ passwordSchema.statics.new = function (userId, passwordRaw, fn) {
 
   // confirm the the length of the password is valid
   if (passwordRaw.length <= PASSWORD_LENGTH_MIN || passwordRaw.length >= PASSWORD_LENGTH_MAX) {
-    return fn(error.invalidPasswordLengthError, null);
+    return fn(errors.invalidPasswordLengthError, null);
   }
 
   // no entity so lets create one

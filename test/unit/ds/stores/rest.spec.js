@@ -4,28 +4,28 @@
  * ds.stores.rest spec
  */
 
-describe('ds::', function() {
-  var $httpBackend,
-    config,
-    ds;
+describe('ds::', function () {
+  var $httpBackend;
+  var config;
+  var ds;
 
   beforeEach(module('ds.stores.rest'));
 
-  describe('ds.stores.rest', function() {
-    beforeEach(inject(function($injector) {
+  describe('ds.stores.rest', function () {
+    beforeEach(inject(function ($injector) {
       config = $injector.get('config');
       $httpBackend = $injector.get('$httpBackend');
       ds = $injector.get('dsRest');
     }));
 
-    afterEach(inject(function() {
+    afterEach(inject(function () {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     }));
 
-    describe('read()', function() {
+    describe('read()', function () {
 
-      it('should populate an object with data from the server', function() {
+      it('should populate an object with data from the server', function () {
         var url = config.API_BASE_URL + '/users/1';
         var entityGroup = 'user';
         var key = '1';
@@ -57,9 +57,9 @@ describe('ds::', function() {
 
     });
 
-    describe('readMulti()', function() {
+    describe('readMulti()', function () {
 
-      it('should populate an object with data from the server', function() {
+      it('should populate an object with data from the server', function () {
         var url = config.API_BASE_URL + '/users/1';
         var entityGroup = 'user';
         var key = '1';

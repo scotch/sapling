@@ -7,14 +7,14 @@
 // TODO write spec clue:
 // consoleReporter = jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
 describe('log.services::', function () {
-  var $log,
-    log,
-    consoleReporter;
+  var $log;
+  var log;
+  var consoleReporter;
 
   beforeEach(module('log.services'));
 
   describe('log', function () {
-    beforeEach(inject(function($injector) {
+    beforeEach(inject(function ($injector) {
       $log = $injector.get('$log');
       log = $injector.get('log');
     }));
@@ -24,7 +24,7 @@ describe('log.services::', function () {
 
     describe('assert()', function () {
 
-      it('should create a new error', function() {
+      it('should create a new error', function () {
         log.error('test error');
       });
 

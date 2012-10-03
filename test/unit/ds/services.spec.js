@@ -4,28 +4,28 @@
  * ds.services spec
  */
 
-describe('ds::', function() {
+describe('ds::', function () {
   var $httpBackend,
     config,
     ds;
 
   beforeEach(module('ds.services'));
 
-  describe('ds.services', function() {
-    beforeEach(inject(function($injector) {
+  describe('ds.services', function () {
+    beforeEach(inject(function ($injector) {
       config = $injector.get('config');
       $httpBackend = $injector.get('$httpBackend');
       ds = $injector.get('ds');
     }));
 
-    afterEach(inject(function() {
+    afterEach(inject(function () {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     }));
 
-    describe('get()', function() {
+    describe('get()', function () {
 
-      it('should populate an object with data from the server', function() {
+      it('should populate an object with data from the server', function () {
 
         var url = config.API_BASE_URL + '/users/1';
         var entityGroup = 'user';

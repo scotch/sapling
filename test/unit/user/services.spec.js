@@ -1,12 +1,14 @@
+'use strict';
+
 /*
  * user.services spec
  */
 
 
 describe('user.services::', function () {
-  var $httpBackend
-    , config
-    , user;
+  var $httpBackend;
+  var config;
+  var user;
 
   beforeEach(module('user.services'));
 
@@ -85,7 +87,7 @@ describe('user.services::', function () {
 
   describe('create()', function () {
 
-    it('should successfully create a user if valid', function() {
+    it('should successfully create a user if valid', function () {
       var url = config.API_BASE_URL + '/users';
       var payload = {
         email: 'kyle@example.com',
@@ -136,7 +138,7 @@ describe('user.services::', function () {
 
       $httpBackend.expectPOST(url, payload).respond(resp);
 
-      p = user.create(payload);
+      var p = user.create(payload);
       p.success(function (u, status) {
         expect(status).toBe(200);
         expect(u.id).toBe('1');
@@ -150,7 +152,7 @@ describe('user.services::', function () {
 
     });
 
-    it('should return an error if in-valid', function() {
+    it('should return an error if in-valid', function () {
       var url = config.API_BASE_URL + '/users';
       var payload = {
         email: 'kyle@example.com',
@@ -199,7 +201,7 @@ describe('user.services::', function () {
 
       $httpBackend.expectPOST(url, payload).respond(400, resp);
 
-      p = user.create(payload);
+      var p = user.create(payload);
       p.success(function (u, status) {
         expect(u).toBe(null);
       });
@@ -228,7 +230,7 @@ describe('user.services::', function () {
 
       $httpBackend.expectPUT(url, payload).respond(payload);
 
-      p = user.update(payload);
+      var p = user.update(payload);
       p.success(function (u, status) {
         expect(status).toBe(200);
         expect(u.id).toBe('1');
@@ -246,9 +248,9 @@ describe('user.services::', function () {
 
       // TODO how is this tested?
       var payload = {
-       name: {
-         givenName: 'Kyle'
-       }
+        name: {
+          givenName: 'Kyle'
+        }
       };
 
       // TODO figure out how to test this. Or better yet find a better way to
@@ -294,7 +296,7 @@ describe('user.services::', function () {
 
       $httpBackend.expectGET(url).respond(404, resp);
 
-      u = user.current();
+      var u = user.current();
       $httpBackend.flush();
 
       // TODO check something here.

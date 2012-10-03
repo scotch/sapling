@@ -31,14 +31,15 @@ angular.module('log.services', [
       };
 
       function consoleLog(type) {
-        return function() {
+        return function (a, b) {
+          // FIXIT clean up.
           if (logMap[type] >= logMap[config.LOG_LEVEL]) {
             if (type === 'assert') {
-              if (!arguments[0]) {
-                new Error('assertion failed: ' + arguments[1]);
+              if (!a) {
+                return new Error('assertion failed: ' + b);
               }
             } else {
-              $log[type](arguments[0]);
+              $log[type](a);
             }
           }
         };

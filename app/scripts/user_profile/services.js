@@ -42,17 +42,18 @@ angular.module('userProfile.services', [
         displayName: function () {
           if (this.name && (this.name.givenName || this.name.familyName)) {
             var a = [];
-            a = this.name.givenName ? a.concat(this.name.givenName) : a ;
-            a = this.name.familyName ? a.concat(this.name.familyName) : a ;
-            if (a.length)
-             return a.join(' ');
+            a = this.name.givenName ? a.concat(this.name.givenName) : a;
+            a = this.name.familyName ? a.concat(this.name.familyName) : a;
+            if (a.length) {
+              return a.join(' ');
+            }
           }
           return 'Anonymous User';
         },
-        isAuthenticated: function() {
-          return this.id != '';
+        isAuthenticated: function () {
+          return this.id !== '';
         },
-        isAdmin: function() {
+        isAdmin: function () {
           for (var i = 0, l = this.roles.length ; i < l ; i++) {
             if (roles[i] === 'admin') {
               return true;

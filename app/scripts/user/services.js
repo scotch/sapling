@@ -54,8 +54,8 @@ angular.module('user.services', [
         displayName: function () {
           if (this.name && (this.name.givenName || this.name.familyName)) {
             var a = [];
-            a = this.name.givenName ? a.concat(this.name.givenName) : a ;
-            a = this.name.familyName ? a.concat(this.name.familyName) : a ;
+            a = this.name.givenName ? a.concat(this.name.givenName) : a;
+            a = this.name.familyName ? a.concat(this.name.familyName) : a;
             if (a.length) {
               return a.join(' ');
             }

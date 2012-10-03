@@ -24,7 +24,7 @@ angular.module('account.controllers.login', [
       // Note: third party authentication is handled by AccountMainCtrl in the
       // account.controllers.main module
 
-      $scope.login = function(user) {
+      $scope.login = function (user) {
         session.create(user, $scope.session)
           .success(function (data, status) {
             $location.url('/account');

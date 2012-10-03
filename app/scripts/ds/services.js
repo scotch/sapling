@@ -31,7 +31,7 @@ angular.module('ds.services', [
       var kinds = {defaultStore: [dsRest]};
 
       function getStores(kind) {
-        return kinds[kind] || kinds['defaultStore'];
+        return kinds[kind] || kinds.defaultStore;
       }
 
       function register(kind, stores) {

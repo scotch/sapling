@@ -39,7 +39,7 @@ angular.module('account.services', [])
          * @return {String}
          */
         errorText: function (code) {
-          return errorText[code]
+          return errorText[code];
         }
 
       };

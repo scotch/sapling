@@ -49,7 +49,7 @@ angular.module('account.controllers.main', [
           var p = targetWin.location.pathname;
 
           // Authentication succeeded
-          if (p == config.AUTH_SUCCESS_REDIRECT_URL) {
+          if (p === config.AUTH_SUCCESS_REDIRECT_URL) {
             targetWin.close();
             $scope.user = user.current();
             $location.url('/account');

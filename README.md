@@ -28,15 +28,11 @@ Sapling is intended to be used with a backend, but comes with a basic NodeJS / E
 
 ### Development
 
-#### Starting Sapling (client)
-
-* `./scripts/development.sh` to start **Brunch** compiling
-*Note: in the future this step will be removed*
-
-#### Starting Express (server)
+#### Starting Sapling with Express
 
 *`npm start`
 Then navigate your browser to [http://localhost:3000](http://localhost:3000)
+This will run the Brunch in the background
 
 #### Testing
 

@@ -2,7 +2,6 @@ require '../../utils'
 request = require 'supertest'
 app = require('../../..').app
 should = require 'should'
-mongoose = require 'mongoose'
 
 
 describe 'Password: API', ->
@@ -11,7 +10,7 @@ describe 'Password: API', ->
 
   describe 'GET /-/api/v1/auth/password', ->
 
-    it 'should return a 401 error', (done) ->
+    it 'should return a 401 error if the user is not authenticated', (done) ->
       request(app)
         .get(baseUrl)
         .set('Accept', 'application/json')

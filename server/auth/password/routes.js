@@ -18,13 +18,7 @@ var LocalStrategy = require('passport-local').Strategy;
 //   however, in this example we are using a baked-in set of users.
 passport.use(new LocalStrategy(
   function (username, password, fn) {
-    console.log('username:', username);
-    console.log('password:', password);
     user.User.findByEmailOrUsername(username, function (err, usr) {
-      console.log('here');
-      console.log('err: ', err);
-      console.log('usr: ', usr);
-
       if (err) {
         return fn(err, false, {message: 'An Error occured'});
       }
@@ -52,10 +46,7 @@ exports.start = function (req, res, fn) {
     if (err) {
       return fn(err);
     }
-    console.log('user: ', user);
     if (!user) {
-      //console.log('/////////////////////////////////////');
-      //req.flash('error', info.message);
       return res.redirect(config.auth.FAILURE_REDIRECT_URL);
     }
 

@@ -45,10 +45,11 @@ var Errors = function () {
   return {
     AbstractError: AbstractError,
     ApiError: ApiError,
-    invalidEmailError:           new ApiError(10, 'invalid email address'),
-    emailInUseError:             new ApiError(11, 'email in use'),
-    invalidPasswordLengthError:  new ApiError(12, 'invalid password length'),
-    notFoundError:               new ApiError(404, 'entity not found')
+    invalidEmailError:          new ApiError(10, 'invalid email address'),
+    emailInUseError:            new ApiError(11, 'email in use'),
+    invalidPasswordLengthError: new ApiError(12, 'invalid password length'),
+    notFoundError:              new ApiError(404, 'entity not found'),
+    serverError:                new ApiError(500, 'server error'),
   };
 }();
 

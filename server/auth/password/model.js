@@ -68,7 +68,6 @@ passwordSchema.statics.authenticate = function (userId, pass, fn) {
     if (!p) {
       fn(err, false);
     } else {
-
       bcrypt.compare(pass, p.auth.passwordHash, fn);
     }
   });

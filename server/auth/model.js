@@ -12,7 +12,7 @@ var AuthProfile;
 
 
 exports.genAuthId = genAuthId = function (provider, id) {
-  return provider + '|' + id;
+  return id + '@' + provider;
 };
 
 var authProfileSchema = new Schema({

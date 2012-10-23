@@ -5,7 +5,7 @@
  * be set through an admin interface.
  */
 
-// TODO: added a lay of persistence, perhaps in instance memory.
+// TODO: added a layer of persistence, perhaps in instance memory.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

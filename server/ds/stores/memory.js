@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  *  **Not for production use**
  * An inefficient in memory cache.

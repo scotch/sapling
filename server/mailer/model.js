@@ -29,13 +29,11 @@ exports.sendOne = function (templateName, locals, fn) {
   }
   emailTemplates(templatesDir, function (err, template) {
     if (err) {
-      //console.log(err);
       return fn(err);
     }
     // Send a single email
     template(templateName, locals, function (err, html, text) {
       if (err) {
-        //console.log(err);
         return fn(err);
       }
       // if we are testing don't send out an email instead return

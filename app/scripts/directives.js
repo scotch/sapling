@@ -11,6 +11,6 @@ angular.module('app.directives', [
     function (version) {
       return function (scope, elm, attrs) {
         return elm.text(version);
-      }
+      };
     }
   ]);

@@ -39,7 +39,7 @@ angular.module('app.controllers', [])
           return 'active';
         }
         return '';
-      }
+      };
     }
   ])
 

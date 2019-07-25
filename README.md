@@ -94,7 +94,7 @@ When we upgrade sapling's repo, you can just fetch the changes and merge them in
       styles/                 --> all custom styles. Acceptable files types inculde:
                                   less, sass, scss and stylus
         themes/               --> a place for custom themes
-          custom/             --> starter theme **NOTE the underscore (_). Files begining with an
+          custom/             --> starter theme **NOTE the underscore (_). Files beginning with an
                                   underscore will not automatically be compiled, they must be imported.
             _override.less    --> styles that should beloaded after bootstrap.
             _variables.less   --> bootstrap variables to be used during the compilation process

@@ -44,7 +44,7 @@
     "ejs": "*",
     "bcrypt": "0.7.x",
     "marked": "0.2.x",
-    "mongoose": "3.x.x",
+    "mongoose": "5.x.x",
     "nodemailer": "0.3.x",
     "session-mongoose": ">= 0.0.7",
     "passport": ">= 0.0.0",

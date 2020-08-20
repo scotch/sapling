@@ -42,7 +42,7 @@
     "express": "3.x.x",
     "email-templates": "0.0.5",
     "ejs": "*",
-    "bcrypt": "0.7.x",
+    "bcrypt": "5.0.x",
     "marked": "0.2.x",
     "mongoose": "3.x.x",
     "nodemailer": "0.3.x",

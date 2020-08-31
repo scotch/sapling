@@ -43,7 +43,7 @@
     "email-templates": "0.0.5",
     "ejs": "*",
     "bcrypt": "0.7.x",
-    "marked": "0.2.x",
+    "marked": "1.1.x",
     "mongoose": "3.x.x",
     "nodemailer": "0.3.x",
     "session-mongoose": ">= 0.0.7",
